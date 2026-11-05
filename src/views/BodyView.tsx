@@ -189,7 +189,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
     ...(fatCard ? [{ key: 'fat' as const, label: t('body.chips.fat'), card: fatCard }] : []),
     ...(compCard ? [{ key: 'composition' as const, label: t('body.chips.composition'), card: compCard }] : []),
   ];
-  const shownChart = charts.find((c) => c.key === chart) ?? charts[0];
+  const shownChart = charts.find((c) => c.key === chart) ?? charts;
 
   return (
     <div className="space-y-3">
@@ -208,3 +208,5 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
           />
         </div>
         <div className="min-w-0 lg:order-4 grid">
+          <Tile
+            label={t('body.latest.bmi.label')}
