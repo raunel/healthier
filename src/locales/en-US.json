@@ -1,87 +1,2525 @@
+{
+  "format": {
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "monthsShort": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "monthsWithDay": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "monthsShortWithDay": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    "weekdays": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "weekdaysNarrow": ["S", "M", "T", "W", "T", "F", "S"],
+    "date": {
+      "dayMonth": "{day} {month}",
+      "dayMonthYear": "{day} {month} {year}",
+      "weekdayDayMonth": "{weekday} {day} {month}",
+      "full": "{weekday} {month} {day} {year}",
+      "monthYear": "{month} {year}",
+      "monthYearShort": "{month} {year}",
+      "rangeInMonth": "{fromDay}–{toDay} {month}",
+      "range": "{from} – {to}",
+      "weekOf": "Week of {date}",
+      "numeric": "{year}-{month}-{day}",
+      "year": "{year}"
+    },
+    "time": {
+      "clock": "{hours}:{minutes}",
+      "hour": "{hours}"
+    },
+    "duration": {
+      "hoursMinutes": "{sign, select, minus {−} plus {+} other {}}{hours}<unit>h</unit> {minutes, number, ::integer-width/*00}<unit>m</unit>",
+      "hours": "{sign, select, minus {−} plus {+} other {}}{hours}<unit>h</unit>",
+      "minutes": "{sign, select, minus {−} plus {+} other {}}{minutes}<unit>m</unit>",
+      "hoursDecimal": "{count, plural, =1 {# hour} other {{hours} hours}}"
+    },
+    "list": {
+      "and": {
+        "pair": "{first} and {second}",
+        "start": "{first}, {rest}",
+        "end": "{first} and {last}"
+      },
+      "or": {
+        "pair": "{first} or {second}",
+        "start": "{first}, {rest}",
+        "end": "{first} or {last}"
+      }
+    },
+    "thousands": "{value}k",
+    "mean": "{unit, select, week {{count}-week mean} other {{count}-day mean}}"
+  },
   "units": {
     "bpm": "bpm",
     "ms": "ms",
-    "kg": "lbs",
-    "km": "mi",
+    "lbs": "lbs",
+    "km": "km",
     "kcal": "kcal",
     "percent": "%",
     "perMinute": "/min",
     "minutes": "min",
     "steps": "steps",
-    "celsius": "°F",
-    "cm": "in",
+    "celsius": "°C",
+    "cm": "cm",
     "perHour": "/h"
   },
-  "body": {
+  "app": {
+    "name": "Healthier",
+    "signIn": {
+      "intro": "Healthier is a personalized health and fitness dashboard that gives you traceable insights from your Google Health data.",
+      "expired": "Your Google connection has expired or was revoked. Reconnect to resume syncing; your stored data is still here.",
+      "cancelled": "Google sign-in was cancelled.",
+      "notInvited": "This Healthier instance is invite-only, and that Google account is not on its list. Ask whoever runs it to add you.",
+      "failed": "Google sign-in failed ({code}). Check the server logs for details.",
+      "connect": "Connect Google Account",
+      "reconnect": "Reconnect Google Account",
+      "demo": "Demo mode",
+      "about": "How Healthier uses your data",
+      "data": {
+        "reads": "Healthier reads your health and fitness data from Google Health: activity, sleep, heart rate, vitals and body measurements.",
+        "uses": "It's used only to show your trends, work out your usual ranges and find what stands out.",
+        "keeps": "It's kept only on the server running this app, and never shared, sold or sent to an AI.",
+        "delete": "You can disconnect and delete it at any time in Settings.",
+        "privacy": "Read the privacy notice"
+      },
+      "wellness": "For general wellness only. Healthier is not a medical device and doesn't diagnose, detect or monitor any condition.",
+      "consent": {
+        "both": "By connecting, you accept the <terms>terms</terms> and <privacy>privacy\u00a0notice</privacy>.",
+        "terms": "By connecting, you accept the <terms>terms</terms>.",
+        "privacy": "By connecting, you accept the <privacy>privacy\u00a0notice</privacy>."
+      }
+    },
+    "header": {
+      "syncing": "syncing",
+      "someone": "User",
+      "demo": "Demo",
+      "account": "{name}, your account"
+    },
+    "nav": {
+      "label": "Pages",
+      "today": "Today",
+      "activity": "Activity",
+      "sleep": "Sleep",
+      "vitals": "Vitals",
+      "body": "Body",
+      "cycle": "Cycle",
+      "labs": "Labs",
+      "settings": "Settings"
+    },
+    "syncFailed": {
+      "title": "Sync Failed",
+      "retry": "Retry",
+      "reasons": {
+        "rejected": "Google Health rejected every request: {detail}",
+        "reconnect": "Google access has expired or was revoked. Sign in again to reconnect.",
+        "tokenRefresh": "Token request failed ({status})",
+        "request": "Request failed ({status})",
+        "noData": "Sync finished but stored no data",
+        "unknown": "Sync failed"
+      }
+    },
+    "loadingDemo": "Loading sample data...",
+    "firstSync": {
+      "title": "Building your health baseline",
+      "body": "Importing your last {days, plural, one {day} other {# days}} from Google Health, including minute-by-minute heart rate. Baselines and insights are computed over the full window, so the dashboard opens once it is all in. This usually takes under a minute, and only happens once.",
+      "progress": "{stream} imported · {done} of {total}",
+      "connecting": "Connecting to Google Health..."
+    },
+    "disconnect": {
+      "confirm": "Disconnect Google and permanently delete all of your data stored by Healthier?",
+      "failed": "Could not delete your data. Please try again."
+    }
+  },
+  "ui": {
+    "sheet": {
+      "close": "Close"
+    },
+    "contributors": "Contributors",
+    "band": {
+      "farBelow": "well below usual",
+      "below": "below usual",
+      "typical": "in your usual range",
+      "above": "above usual",
+      "farAbove": "well above usual",
+      "cycle": "usual for this part of your cycle",
+      "soFarToday": "so far today",
+      "noHistory": "no history",
+      "needsDays": "baseline needs {count, plural, one {# more day} other {# more days}}",
+      "detail": "latest {value} · {days}-day typical {baseline} ± {spread} · z={z} · from {count, plural, one {# day} other {# days}}"
+    },
+    "delta": {
+      "none": "no comparison"
+    },
+    "summary": {
+      "average": "avg:",
+      "today": "today:",
+      "lastNight": "last night:",
+      "latest": "latest:"
+    },
+    "span": {
+      "chips": {
+        "twoWeeks": "14d",
+        "month": "30d",
+        "quarter": "90d",
+        "year": "1y",
+        "all": "All"
+      },
+      "summary": "{span, select, all {All-time summary} year {1-year summary} other {{days}-day summary}}",
+      "loading": "Loading history…",
+      "importing": "Importing older history…",
+      "needsMore": "Needs more than {span} of history"
+    }
+  },
+  "insights": {
+    "carousel": {
+      "title": "Key insights",
+      "description": "Derived from your data to give you a quick overview of what it means — the things that stand out, good or bad, that deserve your attention.",
+      "position": "{index} of {count}",
+      "previous": "Previous insights",
+      "next": "Next insights",
+      "disclaimer": "General wellness information, not medical advice. Healthier is not a medical device. If you're worried about your health, talk to a clinician.",
+      "pages": {
+        "activity": {
+          "title": "Activity insights",
+          "description": "What stands out in how you move: trends, streaks and records, worked out from your own data."
+        },
+        "sleep": {
+          "title": "Sleep insights",
+          "description": "What stands out in your nights: how long, how regular and which way they are heading, worked out from your own data."
+        },
+        "vitals": {
+          "title": "Vitals insights",
+          "description": "What stands out in your heart and recovery readings, measured against your own usual range."
+        },
+        "body": {
+          "title": "Body insights",
+          "description": "What your weigh-ins add up to over time, measured against your own trend."
+        },
+        "cycle": {
+          "title": "Cycle insights",
+          "description": "What repeats across your cycles, found in your own nights and your log."
+        }
+      },
+      "kinds": {
+        "alert": "Alert",
+        "nudge": "Nudge",
+        "trend": "Trend",
+        "milestone": "Milestone",
+        "pattern": "Pattern",
+        "review": "Review",
+        "data": "Data"
+      },
+      "domains": {
+        "cardio": "Vitals",
+        "sleep": "Sleep",
+        "body": "Body",
+        "data": "Data",
+        "movement": "Activity",
+        "cycle": "Cycle"
+      }
+    },
+    "common": {
+      "pastYear": "in the past year",
+      "sinceHistory": "since {month}, as far back as your history goes",
+      "sinceNote": {
+        "count": "{unit, select, night {{count, plural, one { It's been like this for # night.} other { It's been like this for # nights.}}} other {{count, plural, one { It's been like this for # day.} other { It's been like this for # days.}}}}",
+        "longTime": " It's been like this for four weeks or more."
+      }
+    },
+    "body": {
+      "weightDown": {
+        "title": "Your weight is slowly going down",
+        "text": "You're losing about {rate} lbs a week. Your latest weigh-in was {weight} lbs on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
+      },
+      "weightUp": {
+        "title": "Your weight is slowly going up",
+        "text": "You're gaining about {rate} lbs a week. Your latest weigh-in was {weight} lbs on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
+      },
+      "weightStale": {
+        "title": "Time for a weigh-in",
+        "text": "You haven't logged your weight in {count, plural, one {# day} other {# days}}, so your weight trend is stuck at your last reading on {date}."
+      },
+      "bodyFastChange": {
+        "title": "Your weight is changing quickly",
+        "text": "{direction, select, down {You've been losing about {percent}% of your body weight a week for {weeks, plural, one {# week} other {# weeks}}. Most guidance suggests 0.5 to 1% a week for changes that last.} other {You've been gaining about {percent}% of your body weight a week for {weeks, plural, one {# week} other {# weeks}}. That's a fast change, so it's worth a look if it isn't what you're aiming for.}}"
+      },
+      "bodyHoldingSteady": {
+        "title": "Your weight is holding steady",
+        "text": "Your weight has stayed within {within} lbs either way of {middle} lbs for {weeks, plural, one {# week} other {# weeks}}, across {count, plural, one {# weigh-in} other {# weigh-ins}}."
+      },
+      "bodySwings": {
+        "title": "Why your weight jumps around",
+        "text": "Your weight can swing by about {swing} lbs from one day to the next.{trend, select, flat { Underneath that, your trend is flat.} down { Underneath that, your trend is going down by about {rate} lbs a week.} up { Underneath that, your trend is going up by about {rate} lbs a week.} other {}} Weighing at the same time each day makes the swings smaller."
+      },
+      "bodyComposition": {
+        "title": "Your body composition is changing",
+        "text": "Over the last {weeks, plural, one {# week} other {# weeks}} you {lean} and {fat}. That's from {pairs, plural, one {# reading} other {# readings}} that measured both.",
+        "lean": "{change, select, same {kept your lean mass about the same} gained {gained {lbs} lbs of lean mass} other {lost {lbs} lbs of lean mass}}",
+        "fat": "{change, select, same {kept your fat about the same} gained {gained {lbs} lbs of fat} other {lost {lbs} lbs of fat}}"
+      },
+      "bodyFatTrend": {
+        "title": "{direction, select, down {Your body fat is going down} other {Your body fat is going up}}",
+        "text": "Your body fat trend went from {from}% to {to}% over the last {weeks, plural, one {# week} other {# weeks}}, across {count, plural, one {# reading} other {# readings}}."
+      },
+      "bodyWeighInRhythm": {
+        "title": "A steady weigh-in habit",
+        "text": "You've weighed in every week for {count, plural, one {# week} other {# weeks}}. That's enough for a trend you can trust."
+      },
+      "bodyBmi": {
+        "title": "Your BMI changed",
+        "text": "Going by your weight trend and your height of {height} m, your BMI went from {from} to {to} over the last month."
+      },
+      "bodySinceStart": {
+        "title": "Since you started",
+        "text": "{change, select, lost {You've lost {lbs} lbs since {month}, going from {from} lbs to {to} lbs.} other {You've gained {lbs} lbs since {month}, going from {from} lbs to {to} lbs.}}"
+      }
+    },
+    "floors": {
+      "floorMorning": {
+        "title": "A quiet morning",
+        "text": "{known, select, both {You slept {slept} and your body battery is {score}.} sleep {You slept {slept}.} battery {No sleep has synced for last night yet and your body battery is {score}.} other {No sleep has synced for last night yet.}} Nothing new needs your attention this morning."
+      },
+      "floorMidday": {
+        "title": "A steady day so far",
+        "text": "{known, select, both {You've taken {steps, plural, one {# step} other {# steps}} so far and your body battery is {score}.} steps {You've taken {steps, plural, one {# step} other {# steps}} so far.} battery {No steps have synced yet today and your body battery is {score}.} other {No steps have synced yet today.}} Nothing new needs your attention right now."
+      },
+      "floorEvening": {
+        "title": "A calm day",
+        "text": "{known, select, both {Today you took {steps, plural, one {# step} other {# steps}} and had {brisk, plural, one {# minute} other {# minutes}} of brisk activity.} steps {Today you took {steps, plural, one {# step} other {# steps}}.} brisk {No steps have synced today, but you've had {brisk, plural, one {# minute} other {# minutes}} of brisk activity.} other {No steps have synced today.}}",
+        "busier": " This week has been busier than usual.",
+        "quieter": " This week has been quieter than usual.",
+        "usual": " This week has been about as active as usual."
+      },
+      "onToday": {
+        "title": "See {tab} for the latest",
+        "text": "{count, plural, one {{titles} is on {tab} right now, so it isn't repeated here.} other {{titles} are on {tab} right now, so they aren't repeated here.}}",
+        "quoted": "“{title}”"
+      },
+      "activityFloor": {
+        "titleEmpty": "No steps yet",
+        "textEmpty": "Once your steps sync, this is where insights about how you move will show.",
+        "title": "{steady, select, yes {A steady week} other {Your week so far}}",
+        "text": "{weekBefore, select, known {You've averaged {steps, plural, one {# step} other {# steps}} a day over the last 7 days, compared with {previous} the week before.} other {You've averaged {steps, plural, one {# step} other {# steps}} a day over the last 7 days.}}"
+      },
+      "sleepFloor": {
+        "titleEmpty": "No nights recorded yet",
+        "textEmpty": "Once your sleep syncs, this is where insights about your nights will show.",
+        "title": "Your sleep this week",
+        "text": "You've slept {slept} a night on average this week. You need about {need}.",
+        "recorded": " That's from {count, plural, one {# recorded night} other {# recorded nights}}."
+      },
+      "vitalsFloor": {
+        "titleEmpty": "No recent heart data",
+        "textEmpty": "Once your watch syncs your resting heart rate and HRV, this is where insights about them will show.",
+        "title": "Your latest readings",
+        "text": "{known, select, both {Your resting heart rate is {restingHr} bpm and your HRV is {hrv} ms.} restingHr {Your resting heart rate is {restingHr} bpm.} other {Your HRV is {hrv} ms.}}",
+        "steady": " Both are inside your usual range."
+      },
+      "bodyFloor": {
+        "titleEmpty": "No recent weigh-ins",
+        "textEmpty": "You haven't logged your weight in {count, plural, one {the last # day} other {the last # days}}, so there's no trend to read yet. A few weigh-ins over the next weeks will show it.",
+        "titleLatest": "Your latest weigh-in",
+        "textLatest": "Your latest weigh-in was {weight} lbs on {date}. A few more weigh-ins over the next weeks will show your trend.",
+        "title": "No clear change in your weight",
+        "text": "Your weight trend is moving by less than {threshold} lbs a week either way. Your latest weigh-in was {weight} lbs on {date}."
+      },
+      "cycleFloor": {
+        "title": "{known, select, yes {Day {day} of your cycle} other {Your cycles}}",
+        "text": "{known, select, yes {Nothing stands out in this cycle so far. When something repeats across your cycles, like shorter sleep before your period, it will show here.} other {Once Healthier has found a few cycles in your nights, anything that repeats across them will show here.}}"
+      }
+    },
+    "today": {
+      "illnessPattern": {
+        "title": "Several of your signals are off",
+        "text": "Several of your overnight readings are outside their usual range at the same time. This can happen after hard training, a late meal, alcohol or travel, and sometimes when a cold is on the way.",
+        "textSecondMorning": "For a second morning, several of your overnight readings are outside their usual range together. When this lasts more than a day, it is worth taking seriously.",
+        "action": "Drink some extra water, keep today light, and see how tonight goes."
+      },
+      "batteryLow": {
+        "title": "Take it easy today",
+        "text": "Your body battery is {score} out of 100.{hasReason, select, yes { The main reason is that {reason}.} other {}}{thirdLowMorning, select, yes { This is your third low morning in a row. If your training doesn't explain it, it's worth listening to.} other {}}",
+        "action": "An easy day is the right call. Your fitness builds while you recover."
+      },
+      "batteryGreen": {
+        "title": "You're fully charged today",
+        "text": "Your body battery is {score} out of 100. {reasons}.",
+        "action": "If you've been saving a hard workout, today is a good day for it."
+      },
+      "batteryRecharge": {
+        "title": "You recharged overnight",
+        "text": "{hasReason, select, yes {Your body battery climbed from {from} to {to} overnight, mostly because {reason}.} other {Your body battery climbed from {from} to {to} overnight.}}"
+      },
+      "batteryDrain": {
+        "title": "Your body battery dropped overnight",
+        "text": "Your body battery went from {from} to {to} overnight.{hasReason, select, yes { The main reason is that {reason}.} other {}}"
+      },
+      "reasons": {
+        "sleep": {
+          "because": "{night, select, short {you slept {slept} compared to your {need} need} enough {you slept {slept}, more than your {need} need} other {you slept {slept}}}",
+          "statement": "{night, select, short {you slept {slept} compared to your {need} need} enough {you slept {slept}, more than your {need} need} other {you slept {slept}}}"
+        },
+        "sleepDebt": {
+          "because": "{balance, select, short {you're {hours} short on sleep this week} other {you've had a little extra sleep this week}}",
+          "statement": "{balance, select, short {you're {hours} short on sleep this week} other {you've had a little extra sleep this week}}"
+        },
+        "hrv": {
+          "because": "{direction, select, lower {your HRV came in lower than usual} other {your HRV is higher than usual}}",
+          "statement": "{direction, select, lower {your HRV came in lower than usual} other {your HRV is higher than usual}}"
+        },
+        "restingHr": {
+          "because": "{direction, select, higher {your resting heart rate is higher than usual} other {your resting heart rate is lower than usual}}",
+          "statement": "{direction, select, higher {your resting heart rate is higher than usual} other {your resting heart rate is lower than usual}}"
+        },
+        "breathing": {
+          "because": "your breathing rate is higher than usual",
+          "statement": "your breathing rate is higher than usual"
+        },
+        "skinTemp": {
+          "because": "your skin temperature is running warm",
+          "statement": "your skin temperature is running warm"
+        },
+        "strain": {
+          "because": "you've had some hard days recently",
+          "statement": "you've had some hard days recently"
+        }
+      },
+      "weeklyReview": {
+        "title": "Your week in review",
+        "steps": "{change, select, same {Last week you averaged {steps, plural, one {# step} other {# steps}} a day, about the same as the week before.} more {Last week you averaged {steps, plural, one {# step} other {# steps}} a day, {percent}% more than the week before.} fewer {Last week you averaged {steps, plural, one {# step} other {# steps}} a day, {percent}% fewer than the week before.} other {Last week you averaged {steps, plural, one {# step} other {# steps}} a day.}}",
+        "zone": "{opening, select, first {Last week you earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}}.} other { You earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}}.}}",
+        "brisk": "{opening, select, first {Last week you did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity.} other { You did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity.}}",
+        "sleep": "{opening, select, first {Last week you slept {sleep} a night on average.} other { You slept {sleep} a night on average.}}",
+        "zoneAndSleep": "{opening, select, first {Last week you earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}} and slept {sleep} a night on average.} other { You earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}} and slept {sleep} a night on average.}}",
+        "briskAndSleep": "{opening, select, first {Last week you did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity and slept {sleep} a night on average.} other { You did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity and slept {sleep} a night on average.}}",
+        "hrv": "{level, select, usual {your HRV was about usual} littleAbove {your HRV was a little above usual} littleBelow {your HRV was a little below usual} above {your HRV was above usual} other {your HRV was below usual}}",
+        "weight": "{direction, select, lower {your weigh-ins averaged {lbs} lbs lower than the week before} other {your weigh-ins averaged {lbs} lbs higher than the week before}}",
+        "hrvAndWeight": " {clauses}."
+      },
+      "monthlyLedger": {
+        "title": "How this month compared",
+        "text": "Compared with the 30 days before, {changes}.",
+        "steps": "{change, select, same {you walked about the same} more {you walked {percent}% more} other {you walked {percent}% less}}",
+        "restingHr": "{change, select, steady {your resting heart rate held steady} down {your resting heart rate dropped by {bpm} bpm} other {your resting heart rate rose by {bpm} bpm}}",
+        "regularity": "your sleep regularity score went from {from} to {to}"
+      },
+      "labsSdbPattern": {
+        "title": "A pattern in your breathing at night",
+        "text": "On {count} of the last 14 nights, your oxygen, breathing rate and time awake were outside their usual range together. A cold, alcohol or a stuffy room can all do this.",
+        "action": "You can see those nights in Labs. If you also snore heavily or feel very sleepy during the day, mention it to a clinician."
+      },
+      "labsEntropyShift": {
+        "title": "Your HRV entropy has shifted",
+        "text": "A nightly HRV measure from your device has been outside its usual range for {count, plural, one {# night} other {# nights}} in a row. Last night it was {lastNight}, and it's usually around {usual}. It moves with everyday things like a cold, alcohol, poor sleep or hard training.",
+        "action": "You can see the nights in Labs."
+      },
+      "labsDipPattern": {
+        "title": "Your heart rate isn't dropping much at night",
+        "text": "{higherAtNight, select, yes {Your heart rate has been higher at night than during the day. } other {}}On {under} of {measured, plural, one {# measured night} other {# measured nights}}, your heart rate dropped less than 10% from its daytime level.{illnessLeftOut, select, yes { Nights with several signals off were left out.} other {}} Late meals, alcohol, heat and evening exercise can all reduce the drop.",
+        "action": "Labs has the nights. If it lasts for weeks and you have symptoms, you could mention it to a clinician."
+      },
+      "labsTachyEvent": {
+        "title": "Your heart rate went above 100 during sleep",
+        "text": "{session, select, nap {On {date}, your heart rate stayed above 100 bpm for {minutes, plural, one {# minute} other {# minutes}} during a nap, peaking at {peak}.} other {On {date}, your heart rate stayed above 100 bpm for {minutes, plural, one {# minute} other {# minutes}} during your night’s sleep, peaking at {peak}.}}{recurring, select, yes { That's {count, plural, one {# stretch} other {# stretches}} like this in {nights, plural, one {# night} other {# nights}}.} other {}} Fever, alcohol, vivid dreams, waking up and moving can all raise your heart rate.",
+        "action": "Labs lists them. If you notice palpitations, chest pain, dizziness or breathlessness, seek medical care."
+      }
+    },
+    "vitals": {
+      "hrvTrendUp": {
+        "title": "Your recovery is improving",
+        "text": "Your average HRV this week is {current} ms, {change}% higher than last week's {previous} ms. A rise that lasts several days usually means real recovery, not just one good night."
+      },
+      "hrvTrendDown": {
+        "title": "Your recovery has been slipping",
+        "text": "Your average HRV this week is {current} ms, {change}% lower than last week's {previous} ms. A slide like this often comes with heavy training, short sleep, stress or a cold."
+      },
+      "hrvAcuteHigh": {
+        "title": "Great recovery last night",
+        "text": "Your HRV was {value} ms last night, above your usual range. It's usually around {usual} ms."
+      },
+      "hrvAcuteLow": {
+        "title": "Your HRV is lower than usual",
+        "textSingle": "Your HRV was {value} ms last night, lower than your usual {usual} ms. One low night isn't a trend. Two or three in a row usually mean your body needs more recovery.",
+        "textRun": "Your HRV has been below normal for {count, plural, one {# night} other {# nights}} in a row. Last night it was {value} ms, and it's usually around {usual} ms. This is starting to look like a trend rather than one night."
+      },
+      "rhrShiftUp": {
+        "title": "Your resting heart rate is creeping up",
+        "text": "Over the last two weeks your resting heart rate averaged {average} bpm, {change} bpm higher than in the two weeks before."
+      },
+      "rhrShiftDown": {
+        "title": "Your resting heart rate is coming down",
+        "text": "Over the last two weeks your resting heart rate averaged {average} bpm, {change} bpm lower than in the two weeks before."
+      },
+      "rhrAcuteHigh": {
+        "title": "Your heart rate is higher than usual",
+        "text": "Your resting heart rate is {value} bpm this morning. It's usually around {usual}. This often follows a late meal, alcohol or heat, and sometimes comes before a cold.",
+        "textThird": "This is the third morning your resting heart rate has been above your usual range. It's {value} bpm today, and it's usually around {usual}.",
+        "action": "If it's still high tomorrow, take an easier day.",
+        "actionThird": "If nothing obvious explains it, keep today easy."
+      },
+      "rhrAcuteLow": {
+        "title": "Your heart is nicely relaxed",
+        "text": "Your resting heart rate is {value} bpm this morning, lower than your usual {usual}."
+      },
+      "vo2Up": {
+        "title": "Your cardio fitness went up",
+        "text": "Your VO₂ max estimate rose by {change} to {value}. It only moves up when the trend is clear, so you earned this one."
+      },
+      "vo2Down": {
+        "title": "Your cardio fitness dipped slightly",
+        "text": "Your VO₂ max estimate went down by {change} to {value}. It reacts slowly, so this may reflect a quieter few weeks rather than today."
+      },
+      "recordRhr": {
+        "title": "{reach, select, twoMonths {Your calmest week in two months} year {Your calmest week in a year} other {Your calmest week yet}}",
+        "text": "{reach, select, twoMonths {Your resting heart rate averaged {value} bpm this week. That's your lowest week in the last two months.} other {Your resting heart rate averaged {value} bpm this week. That's your lowest week {span}.}}"
+      },
+      "recordHrv": {
+        "title": "{reach, select, twoMonths {Your best week of recovery in two months} year {Your best week of recovery in a year} other {Your best week of recovery yet}}",
+        "text": "{reach, select, twoMonths {Your HRV averaged {value} ms this week. That's your highest week in the last two months.} other {Your HRV averaged {value} ms this week. That's your highest week {span}.}}"
+      },
+      "vitalsBreathingUp": {
+        "title": "You've been breathing faster at night",
+        "text": "Your breathing rate has been about {rate} breaths a minute for the last {count, plural, one {# night} other {# nights}}. It's usually around {usual}. Hard training, alcohol, heat or a cold on the way can all raise it."
+      },
+      "vitalsWarm": {
+        "title": "You've been running warm",
+        "text": "Your skin temperature has been about {value} °C above your normal for the last {count, plural, one {# night} other {# nights}}. Heat, alcohol, late meals or a cold can all cause this."
+      },
+      "vitalsOxygenLower": {
+        "title": "Your oxygen was lower at night",
+        "textSingle": "Your overnight oxygen was {value}% last night. It's usually around {usual}%. You can see these nights in Labs.",
+        "textRun": "Your overnight oxygen averaged {value}% over the last {count, plural, one {# night} other {# nights}}. It's usually around {usual}%. You can see these nights in Labs."
+      },
+      "vitalsAllQuiet": {
+        "title": "Everything looks steady",
+        "text": "{only, select, restingHr {Your {signals} hasn't strayed far from its usual range for {count, plural, one {# night} other {# nights}}.} hrv {Your {signals} hasn't strayed far from its usual range for {count, plural, one {# night} other {# nights}}.} other {Your {signals} haven't strayed far from their usual range for {count, plural, one {# night} other {# nights}}.}}",
+        "textOrMore": "{only, select, restingHr {Your {signals} hasn't strayed far from its usual range for {count, plural, one {# night or more} other {# nights or more}}.} hrv {Your {signals} hasn't strayed far from its usual range for {count, plural, one {# night or more} other {# nights or more}}.} other {Your {signals} haven't strayed far from their usual range for {count, plural, one {# night or more} other {# nights or more}}.}}",
+        "signals": {
+          "restingHr": "resting heart rate",
+          "hrv": "HRV",
+          "breathing": "breathing",
+          "oxygen": "oxygen",
+          "temperature": "temperature"
+        }
+      },
+      "vitalsHrvStability": {
+        "title": "Your recovery is steady",
+        "text": "This week your HRV varied by about {now}% around its average. Usually it varies by about {usual}%. Steadier HRV often goes with good recovery."
+      },
+      "vitalsBounceBack": {
+        "title": "{pace, select, quick {You bounce back quickly} other {How quickly you bounce back}}",
+        "text": "{pace, select, quick {After your hardest days, your HRV is usually in its normal range again by the next night.} few {After your hardest days, your HRV usually takes about {nights, plural, one {# night} other {# nights}} to get back to its normal range.} other {After your hardest days, your HRV usually takes more than three nights to get back to its normal range.}} {unit, select, brisk {That's based on {days, plural, one {# day} other {# days}} with {minutes, plural, one {# brisk minute} other {# brisk minutes}} or more in the last 8 weeks.} other {That's based on {days, plural, one {# day} other {# days}} with {minutes, plural, one {# active zone minute} other {# active zone minutes}} or more in the last 8 weeks.}}"
+      },
+      "vitalsWeekShape": {
+        "title": "Your recovery has a weekly pattern",
+        "text": "Your HRV is usually lowest on {low} and highest on {high}. On {low} it's about {below}% below your weekly average.",
+        "mornings": ["Sunday mornings", "Monday mornings", "Tuesday mornings", "Wednesday mornings", "Thursday mornings", "Friday mornings", "Saturday mornings"]
+      },
+      "vitalsFitnessLevel": {
+        "title": "{rated, select, true {Your cardio fitness for your age} other {Your cardio fitness}}",
+        "text": "{rated, select, true {Your VO₂ max is {value}, which Google rates as {level} for your age.} other {Your VO₂ max is {value}.}}",
+        "change": "{direction, select, up { It's {change} points higher than on {date}.} other { It's {change} points lower than on {date}.}}",
+        "levels": {
+          "poor": "Poor",
+          "fair": "Fair",
+          "average": "Average",
+          "good": "Good",
+          "veryGood": "Very good",
+          "excellent": "Excellent"
+        }
+      },
+      "vitalsCalmestMonth": {
+        "title": "Your calmest month",
+        "text": "Your resting heart rate averaged {value} bpm in {month}. That's your lowest month {span}."
+      },
+      "vitalsLowestRhr": {
+        "title": "{reach, select, year {Your lowest resting heart rate in a year} other {Your lowest resting heart rate yet}}",
+        "text": "{when, select, today {Your resting heart rate was {value} bpm this morning, your lowest {span}. Your previous low was {previous} bpm.} other {On {date} your resting heart rate was {value} bpm, your lowest {span}. Your previous low was {previous} bpm.}}"
+      }
+    },
+    "sleep": {
+      "nightShort": {
+        "title": "Last night wasn't your best sleep",
+        "text": "Your sleep score is {score} out of 100 from last night. You slept {slept} compared to your {need} need.",
+        "secondNight": " That makes two short nights in a row.",
+        "action": "Going to bed even 30 minutes earlier tonight will help you catch up.",
+        "actionSecond": "Missed sleep adds up, so tonight matters more than last night did."
+      },
+      "nightGood": {
+        "title": "You slept really well",
+        "text": "Your sleep score is {score} out of 100 from last night. You slept {slept} and were asleep for {efficiency}% of your time in bed.",
+        "bestInWeeks": " It's your best night in {weeks, plural, one {# week} other {# weeks}}."
+      },
+      "deepHigh": {
+        "title": "Lots of deep sleep last night",
+        "text": "You got {minutes, plural, one {# minute} other {# minutes}} of deep sleep last night. You usually get about {usual}. Deep sleep is when your body does most of its physical recovery."
+      },
+      "sleepDebt": {
+        "title": "You're short on sleep this week",
+        "titleSevere": "You're very short on sleep this week",
+        "text": "Over the {nights, plural, one {# night} other {# nights}} before last night, you slept {shortfall} less than you need.",
+        "textAfterGoodNight": "Last night's {slept} helped. Over the {nights, plural, one {# night} other {# nights}} before it, you slept {shortfall} less than you need.",
+        "severe": " Short nights like these add up and wear on your focus and recovery.",
+        "action": "A few earlier nights would help you catch up.",
+        "actionSevere": "Debt like this clears over several nights. Try adding 30 to 45 minutes of sleep over the next few nights."
+      },
+      "bedCreepLater": {
+        "title": "You're going to bed later"
+      },
+      "bedCreepEarlier": {
+        "title": "You're going to bed earlier"
+      },
+      "bedDrifting": {
+        "title": "Your bedtime has been all over the place",
+        "text": "Over the last two weeks your bedtime has moved by about {minutes, plural, one {# minute} other {# minutes}} either side of {time}. A steadier bedtime helps your sleep, as long as you still get the hours you need."
+      },
+      "bedSettling": {
+        "titleSettling": "Your bedtime is settling down",
+        "titleSteady": "Your bedtime has been steady",
+        "text": "{exact, select, true {For two weeks you've gone to bed at about {time} every night.} other {For two weeks you've gone to bed within about {minutes, plural, one {# minute} other {# minutes}} of {time}.}}"
+      },
+      "wakeRhythm": {
+        "title": "You're waking at a steady time",
+        "text": "{exact, select, true {For two weeks you've woken up at about {time} every morning.} other {For two weeks you've woken up within about {minutes, plural, one {# minute} other {# minutes}} of {time}.}}"
+      },
+      "sriClimbing": {
+        "title": "Your sleep schedule is more regular",
+        "text": "Your sleep regularity score rose from {before} to {now} this month. Keeping regular hours is linked to better long-term health."
+      },
+      "windDown": {
+        "title": "Time to start winding down",
+        "textBest": "You tend to sleep best when you're asleep by {time}.",
+        "bestAlsoShort": " You're also {shortfall} short on sleep this week, so an early night would help.",
+        "bestLastNightShort": " Last night was short, so an early night would help.",
+        "bestThisWeek": " This week you've been going to bed around {time}.",
+        "bestGettingLater": " Lately your bedtime has been getting later.",
+        "actionBest": "Being asleep by {time} tonight would help.",
+        "textUsual": "{later, select, true {You've been going to bed around {time} lately, and it's been getting later.} other {You've been going to bed around {time} lately.}}",
+        "usualAlsoShort": " You're also {shortfall} short on sleep this week.",
+        "usualLastNightShort": " Last night was short.",
+        "actionUsual": "Getting to bed around your usual time tonight, with time for a full night's sleep, will help."
+      },
+      "weekdayDeficit": {
+        "title": "You sleep less on weekdays",
+        "text": "On free days you usually sleep about {free}, but on workdays only {work}. Catching up at the weekend helps, but it doesn't fully make up for the week."
+      },
+      "sleepDebtCleared": {
+        "title": "You're no longer short on sleep",
+        "text": "{when, select, lastWeek {Last week you were {shortfall} short on sleep.} yesterday {Yesterday you were {shortfall} short on sleep over the past week.} other {A few days ago you were {shortfall} short on sleep over the past week.}} {met, select, true {Over the {nights, plural, one {# night} other {# nights}} before last night, your sleep added up to what you need.} other {Over the {nights, plural, one {# night} other {# nights}} before last night, your sleep came within an hour of what you need.}}"
+      },
+      "sleepRestedStreak": {
+        "title": "A run of good nights",
+        "text": "You've slept at least the {need} you need for {nights, plural, one {# night} other {# nights}} in a row."
+      },
+      "sleepNeed": {
+        "title": "How much sleep you need",
+        "textSet": "Your sleep cards measure each night against the {need} you set in Settings. Your nights are usually about {usual}.",
+        "textFloor": "Your sleep cards measure each night against {hours, plural, one {# hour} other {# hours}}. Your nights are usually shorter, about {usual}, but most adults need at least {hours, plural, one {# hour} other {# hours}}.",
+        "textCeiling": "Your sleep cards measure each night against {need}. You usually sleep longer, about {usual}, but the cards don't aim higher than {need}.",
+        "textEstimate": "Your sleep cards measure each night against about {need}. That's the middle of your last {nights, plural, one {# recorded night} other {# recorded nights}}."
+      },
+      "sleepBestBedtime": {
+        "titleEarlier": "You sleep best before {time}",
+        "textEarlier": "On nights you went to sleep by {time}, your sleep score averaged {score}. On later nights it averaged {otherScore}. That's based on {nights, plural, one {# earlier night} other {# earlier nights}} and {otherNights, plural, one {# later one} other {# later ones}}, so it's a pattern rather than a rule.",
+        "titleLater": "Your later nights score better",
+        "textLater": "On nights you went to sleep after {time}, your sleep score averaged {score}. On earlier nights it averaged {otherScore}. That's based on {nights, plural, one {# later night} other {# later nights}} and {otherNights, plural, one {# earlier one} other {# earlier ones}}, so it's a pattern rather than a rule."
+      },
+      "sleepNaturalRhythm": {
+        "title": "Your natural sleep rhythm",
+        "text": "When you don't have to be up early, you usually sleep from about {bed} to {wake}. {catchUp, select, true {Some of that is catching up on the week, so the middle of your natural night is around {mid}.} other {The middle of your sleep falls around {mid}.}}"
+      },
+      "sleepWeekendShift": {
+        "title": "Your weekend sleep shift",
+        "text": "{later, select, true {At weekends you sleep about {shift} later than on weekdays.} other {At weekends you sleep about {shift} earlier than on weekdays.}} For your body, that's a bit like flying across a time zone and back every week."
+      },
+      "sleepWeekShape": {
+        "title": "Your shortest and longest nights",
+        "text": "{shortestNight} is usually your shortest, at about {shortest}. {longestNight} is usually your longest, at about {longest}.",
+        "nights": ["Sunday night", "Monday night", "Tuesday night", "Wednesday night", "Thursday night", "Friday night", "Saturday night"]
+      },
+      "sleepRestless": {
+        "title": "More time awake at night",
+        "text": "You spent about {minutes, plural, one {# minute} other {# minutes}} awake each night this week, compared with your usual {usual}. Late meals, alcohol, heat and stress can all cause more wake-ups."
+      },
+      "sleepEfficiency": {
+        "titleFalling": "More of your time in bed is spent awake",
+        "textFalling": "In the last 30 days you were asleep for {pct}% of your time in bed. In the 30 days before, it was {before}%.",
+        "titleGood": "You use your time in bed well",
+        "titleNeutral": "Time in bed and time asleep",
+        "text": "In the last 30 days you were asleep for {pct}% of your time in bed, about {asleep} out of {inBed} a night."
+      },
+      "sleepRemShort": {
+        "title": "Less REM sleep than usual",
+        "text": "{every, select, true {On each of the last {nights, plural, one {# night} other {# nights}} you got less REM sleep than usual, about {minutes, plural, one {# minute} other {# minutes}} instead of {usual}.} other {On {low} of the last {nights, plural, one {# night} other {# nights}} you got less REM sleep than usual, about {minutes, plural, one {# minute} other {# minutes}} instead of {usual}.}} Most REM comes late in the night, so short nights cut it first."
+      },
+      "sleepNaps": {
+        "title": "A few naps this week",
+        "text": "You took {naps, plural, one {# nap} other {# naps}} in the last week, about {minutes, plural, one {# minute} other {# minutes}} each.",
+        "afterShortNights": " Each one came after a night shorter than your {need} need."
+      },
+      "sleepHrvLink": {
+        "titleHigher": "Good sleep shows in your HRV",
+        "titleLower": "Your HRV and how long you sleep",
+        "text": "{higher, select, true {On nights of 7 hours or more, your overnight HRV is usually about {pct}% higher than on shorter nights.} other {On nights of 7 hours or more, your overnight HRV is usually about {pct}% lower than on shorter nights.}} That's based on {longer, plural, one {# longer night} other {# longer nights}} and {shorter, plural, one {# shorter one} other {# shorter ones}}. It's a pattern in your data, not proof that one causes the other."
+      },
+      "sleepBestMonth": {
+        "title": "Your best month of sleep",
+        "text": "In {month} you slept {slept} a night on average, and your average sleep score was {score}. That's your best month of sleep {span}."
+      },
+      "sleepBestNight": {
+        "titleYear": "Your best night's sleep in a year",
+        "titleYet": "Your best night's sleep yet",
+        "text": "{lastNight, select, true {Last night's sleep score was {score}, your best {span}.} other {Your sleep score on {date} was {score}, your best {span}.}} Your previous best was {previous}."
+      },
+      "sleepCoverage": {
+        "titleNew": "Still getting to know your sleep",
+        "textNew": "Your sleep records start on {date}, so there {nights, plural, one {is # night} other {are # nights}} so far. Comparisons will get sharper as more nights come in.",
+        "titleThin": "Some nights have no record",
+        "textThin": "Your watch recorded sleep on {recorded} of the last {nights, plural, one {# night} other {# nights}}. Nights without a record are left out of your averages rather than counted as zero."
+      },
+      "sleepGap": {
+        "title": "A few nights are missing",
+        "text": "There's no sleep data from {from} to {to}. Those nights are left out of your averages rather than counted as zero."
+      },
+      "common": {
+        "bedtimeShift": "This week your average bedtime was {recent}. In the two weeks before, it was {prior}."
+      }
+    },
+    "activity": {
+      "common": {
+        "goalDays": "{shape, select, everyDay {every one of the last 28 days} someDays {{hits} of the last 28 days} everyRecorded {every one of {count, plural, one {# recorded day} other {# recorded days}} in the last four weeks} other {{hits} of {count, plural, one {# recorded day} other {# recorded days}} in the last four weeks}}"
+      },
+      "ramp": {
+        "title": "You're moving a lot more than usual",
+        "text": "This week you've taken {ratio} times as many steps as in an average week over the three before. Big jumps are easy to make without noticing, so let how you feel be your guide."
+      },
+      "stepsUp": {
+        "title": "You've been moving more this week",
+        "text": "You're averaging {count, plural, one {# step} other {# steps}} a day this week, up from {previous} last week. That's {pct}% more."
+      },
+      "stepsDown": {
+        "title": "A quieter week",
+        "text": "You've averaged {count, plural, one {# step} other {# steps}} a day this week, compared with {previous} last week. Maybe it was a rest week, or just a busy one at the desk."
+      },
+      "streak": {
+        "title": "You're on a streak",
+        "text": "You've walked more than {goal, plural, one {# step} other {# steps}} every day for {count, plural, one {# day} other {# days}} in a row."
+      },
+      "stepRecord": {
+        "title": "{reach, select, twoMonths {Your biggest day in two months} year {Your biggest day in a year} other {Your biggest day yet}}",
+        "text": "{reach, select, twoMonths {You walked {count, plural, one {# step} other {# steps}} on {date}. That's your biggest day in the last two months. Your previous best was {previous}.} other {You walked {count, plural, one {# step} other {# steps}} on {date}. That's your biggest day {span}. Your previous best was {previous}.}}"
+      },
+      "whoWeek": {
+        "title": "You hit the weekly activity target",
+        "text": "{source, select, zone {You've earned {count, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}} this week.} other {You've done {count, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity this week, with harder minutes counting double.}} {spare, plural, =0 {That passes the WHO's recommended {target}.} one {That passes the WHO's recommended {target}, with # day to spare.} other {That passes the WHO's recommended {target}, with # days to spare.}}"
+      },
+      "mvpaUp": {
+        "title": "More brisk activity this week",
+        "text": "You're averaging {count, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity a day this week, up from {previous} last week. That's the kind of activity the guidelines count."
+      },
+      "mvpaDown": {
+        "title": "Less brisk activity this week",
+        "text": "You're averaging {count, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity a day this week, down from {previous} last week."
+      },
+      "slowDay": {
+        "title": "A slow start today",
+        "text": "It's {time} and you've taken {count, plural, one {# step} other {# steps}} so far. On a normal day you reach about {usual}.",
+        "action": "A 10-minute walk after lunch would get things moving. Short breaks from sitting make a real difference."
+      },
+      "aheadOfYourself": {
+        "title": "You're ahead of your usual pace",
+        "text": "You've already taken {count, plural, one {# step} other {# steps}} before lunch. That's most of a normal day for you."
+      },
+      "withinReach": {
+        "title": "Your step goal is within reach",
+        "text": "You're {count, plural, one {# step} other {# steps}} short of {goal}.",
+        "action": "A 15-minute walk would close the gap."
+      },
+      "movementHrvAssociation": {
+        "title": "Big days and your recovery",
+        "text": "Over the last {weeks, plural, one {# week} other {# weeks}}, your HRV was usually about {pct}% lower on the night after a day of more than {threshold, plural, one {# step} other {# steps}}. That's based on {high, plural, one {# big day} other {# big days}} and {low, plural, one {# ordinary one} other {# ordinary ones}}.{illness, select, true { Nights around signs of illness were left out.} other {}} It's a pattern in your data, not proof that one causes the other."
+      },
+      "activityQuietDays": {
+        "title": "A few very quiet days",
+        "text": "You had {count, plural, one {# day} other {# days}} in the last week with fewer than {line, plural, one {# step} other {# steps}}. That's under half of your usual day, which is about {usual, plural, one {# step} other {# steps}}."
+      },
+      "activityAzmStreak": {
+        "title": "Active days in a row",
+        "text": "{source, select, zone {You've earned at least {daily, plural, one {# active zone minute} other {# active zone minutes}} every day for {count, plural, one {# day} other {# days}}. That's a day's share of the WHO's recommended {target} a week.} other {You've done at least {daily, plural, one {# minute} other {# minutes}} of brisk activity every day for {count, plural, one {# day} other {# days}}, with harder minutes counting double. That's a day's share of the WHO's recommended {target} a week.}}"
+      },
+      "activityBackAtIt": {
+        "title": "Back on track",
+        "text": "{when, select, today {You passed {goal, plural, one {# step} other {# steps}} today for the first time in {gap, plural, one {# day} other {# days}}.} other {You passed {goal, plural, one {# step} other {# steps}} on {date} for the first time in {gap, plural, one {# day} other {# days}}.}}"
+      },
+      "activityDistance": {
+        "title": "A marathon's distance this week",
+        "text": "You've covered {km} km this week. That's more than the length of a marathon."
+      },
+      "activityDistanceMonth": {
+        "title": "You've passed {mark} km this month",
+        "text": "You've covered {km} km so far this month."
+      },
+      "activityFloors": {
+        "title": "You've been climbing more",
+        "text": "You climbed {count, plural, one {{floors} floor} other {{floors} floors}} in the last 7 days, the most in any week of the last two months."
+      },
+      "activityIntensityMix": {
+        "title": "How hard you're working",
+        "text": "{mix, select, moderate {Most of your active minutes in the last four weeks were at a moderate effort, in the fat-burn zone.} hard {Most of your active minutes in the last four weeks were at a hard effort, in the cardio and peak zones.} other {Your active minutes in the last four weeks were split fairly evenly between moderate and hard effort.}} {count, plural, one {You spent at least 5 minutes in the cardio or peak zone on # day.} other {You spent at least 5 minutes in the cardio or peak zone on # days.}}"
+      },
+      "activityWeekendLoad": {
+        "title": "{split, select, weekend {Your weekends do most of the work} other {Two days did most of the work}}",
+        "text": "{source, select, zone {Last week, {share}% of your active zone minutes came on {days}. Your weekly total counts the same however you spread it.} other {Last week, {share}% of your brisk minutes came on {days}. Your weekly total counts the same however you spread it.}}"
+      },
+      "activityConsistency": {
+        "title": "{trend, select, up {You're hitting your goal more often} other {You're reaching your goal less often}}",
+        "text": "You reached {goal, plural, one {# step} other {# steps}} on {days}. In the four weeks before, it was {hits} of {total, plural, one {# day} other {# days}}."
+      },
+      "activityGoalFit": {
+        "title": "{fit, select, above {You usually beat your goal} other {Your goal is a stretch most days}}",
+        "text": "{fit, select, above {On a typical day you take about {count, plural, one {# step} other {# steps}}, well past the {goal} goal. You reached {goal} on {days}.} other {On a typical day you take about {count, plural, one {# step} other {# steps}}. You reached {goal} on {days}.}}"
+      },
+      "activityWeekShape": {
+        "title": "Your most and least active days",
+        "text": "{activeDay} is usually your most active day, at about {count, plural, one {# step} other {# steps}}. {quietDay} is usually your quietest, at about {quietSteps}."
+      },
+      "activityPeakHours": {
+        "title": "When you're most active",
+        "text": "{when, select, same {You're usually most active between {from} and {to}, on weekdays and at weekends.} split {On weekdays you're most active between {from} and {to}. At weekends it's between {weekendFrom} and {weekendTo}.} weekdays {On weekdays you're most active between {from} and {to}.} other {At weekends you're most active between {weekendFrom} and {weekendTo}.}} That's when your heart rate most often reaches a brisk-walking level, {threshold} bpm or more. It's based on {count, plural, one {# day} other {# days}} of heart-rate readings from the last four weeks."
+      },
+      "activityBestMonth": {
+        "title": "Your most active month",
+        "text": "You averaged {count, plural, one {# step} other {# steps}} a day in {month}. That's your most active month {span}."
+      },
+      "activityWeekRecord": {
+        "title": "{reach, select, year {Your most active week in a year} other {Your most active week yet}}",
+        "text": "You took {count, plural, one {# step} other {# steps}} over the last 7 days. That's your most active week {span}."
+      },
+      "activityLongestWalk": {
+        "title": "{reach, select, year {Your longest walk in a year} other {Your longest walk yet}}",
+        "text": "You covered {km} km on {date}, your furthest day {span}. Your previous best was {previous} km."
+      },
+      "activityMostFloors": {
+        "title": "{reach, select, year {Your most floors in a year} other {Your most floors yet}}",
+        "text": "You climbed {count, plural, one {# floor} other {# floors}} on {date}, your most in a day {span}. Your previous best was {previous}."
+      },
+      "activityHardestDay": {
+        "title": "{reach, select, year {Your hardest day in a year} other {Your hardest day yet}}",
+        "text": "{source, select, zone {You earned {count, plural, one {# active zone minute} other {# active zone minutes}} on {date}, your most in a day {span}. Your previous best was {previous}.} other {You did {count, plural, one {# minute} other {# minutes}} of brisk activity on {date}, harder minutes counting double. That's your most in a day {span}. Your previous best was {previous}.}}"
+      }
+    },
+    "cycle": {
+      "due": {
+        "title": "{started, select, yes {Your period could start any day now} other {Your period is likely in the next few days}}",
+        "text": "{basis, select, early {Your two cycles so far ran {min} to {max} days, so your next period may come between {from} and {to}.} other {{same, select, yes {{count, plural, one {Your last cycle} other {Your last # cycles each}} ran {min, plural, one {# day} other {# days}}, so your next period is likely on {from}.} other {{count, plural, one {Your last cycle} other {Your last # cycles}} ran {min} to {max} days, so your next period is likely between {from} and {to}.}}}}{started, select, yes { If it has started, you can log it on the {tab} page. If you don't, Healthier will find it in your nights a few days later.} other {}}"
+      },
+      "newCycle": {
+        "title": "A new cycle seems to have started",
+        "text": "Your heart rate, HRV and temperature changed the way they do when a period starts, so day 1 of a new cycle was about {date}, give or take a few days. If that's right, there's nothing to do. If it began on another day, or it wasn't a period, you can say so on the {tab} page."
+      },
+      "sleepBefore": {
+        "title": "You sleep less before your period",
+        "text": "Over {count, plural, one {your last cycle} other {your last # cycles}}, you slept {before} on average in the three nights before your period, {diff, plural, one {# minute} other {# minutes}} less than on the other nights of those cycles. An earlier bedtime in the days before your next one could make up some of it."
+      },
+      "heartFollows": {
+        "title": "Your heart follows your cycle",
+        "text": "Over {count, plural, one {your last cycle} other {your last # cycles}}, your basal resting heart rate ran about {bpm} bpm higher in the luteal phase than in the follicular phase. That's a common pattern through a cycle.{aware, select, yes { Healthier allows for it elsewhere, so a higher heart rate then is only called unusual when it goes beyond your own pattern.} other {}}"
+      },
+      "steady": {
+        "title": "Your cycles are regular",
+        "text": "{spread, select, none {Your last {count, plural, one {cycle} other {# cycles each}} ran {min, plural, one {# day} other {# days}}} other {Your last {count, plural, one {cycle} other {# cycles all}} ran between {min} and {max} days}}{periods, select, same {, and your periods lasted {periodMin, plural, one {# day} other {# days}} each time.} range {, and your periods lasted {periodMin} to {periodMax} days.} other {.}} Regular cycles make your next period easier to see coming."
+      }
+    }
+  },
+  "today": {
+    "battery": {
+      "title": "Body battery",
+      "tiers": {
+        "charged": {
+          "label": "You're fully charged",
+          "name": "Charged",
+          "figure": "Body battery at {score}, in the Charged stage"
+        },
+        "balanced": {
+          "label": "You've got plenty in the tank",
+          "name": "Balanced",
+          "figure": "Body battery at {score}, in the Balanced stage"
+        },
+        "low": {
+          "label": "Go a little easier today",
+          "name": "Low",
+          "figure": "Body battery at {score}, in the Low stage"
+        },
+        "drained": {
+          "label": "Your body wants a breather",
+          "name": "Drained",
+          "figure": "Body battery at {score}, in the Drained stage"
+        }
+      },
+      "noData": "No data",
+      "composition": "Composed from HRV, resting heart rate, holistic sleep score & architecture against your personal {days}-day baselines, and multi-day ACWR training load.",
+      "outOf": "/ 100",
+      "noReadingsSince": "No readings since {date}",
+      "notEnoughData": "Not enough data",
+      "confidence": {
+        "low": "Low confidence",
+        "medium": "Medium confidence",
+        "high": "High confidence"
+      },
+      "missing": "{count, plural, one {no {signals} last night} other {no {signals} last night}}",
+      "missingSignals": {
+        "hrv": "HRV",
+        "restingHr": "resting heart rate",
+        "sleep": "sleep"
+      },
+      "calibrating": "{count, plural, one {{signals} calibrating to a new device} other {{signals} calibrating to a new device}}",
+      "calibratingSignals": {
+        "hrv": "HRV",
+        "restingHr": "resting heart rate"
+      },
+      "figure": {
+        "empty": "Body battery, no score yet"
+      },
+      "range": "{min} – {max}",
+      "rangeNarrow": "{min}–{max}",
+      "parts": {
+        "hrv": {
+          "label": "HRV vs baseline",
+          "detail": "{source, select, deep {{last} ms last night · 7-day {week} vs {typical} ms typical (deep-sleep RMSSD)} other {{last} ms last night · 7-day {week} vs {typical} ms typical (overnight RMSSD)}}",
+          "note": "Your HRV is unusually far above your baseline. Higher is usually better, but a sudden spike can also follow heavy training overload, so treat this peak with mild suspicion."
+        },
+        "restingHr": {
+          "label": "Resting HR vs baseline",
+          "detail": "{value} bpm vs {typical} bpm typical"
+        },
+        "sleep": {
+          "label": "Last night’s sleep",
+          "detail": "{slept} vs {need} need",
+          "detailStages": "{slept} vs {need} need ({restorative}% deep+REM · {efficiency}% eff)",
+          "needApprox": "~{need}"
+        },
+        "sleepDebt": {
+          "label": "Recent sleep debt",
+          "short": "{hours}h short of need across the prior {count, plural, one {# night} other {# nights}}",
+          "banked": "{hours}h banked across the prior {count, plural, one {# night} other {# nights}}"
+        },
+        "breathing": {
+          "label": "Breathing rate",
+          "detail": "{value}/min vs {typical} typical — elevated"
+        },
+        "skinTemp": {
+          "label": "Skin temperature",
+          "detail": "+{value} °C above your baseline"
+        },
+        "strain": {
+          "label": "Recent strain",
+          "high": "multi-day training load significantly above your 28-day baseline",
+          "raised": "recent physical activity above your 28-day usual"
+        }
+      }
+    },
+    "from": "From {date}",
+    "sleep": {
+      "tile": "Last night",
+      "title": "Last night sleep",
+      "score": "Score",
+      "scoreOutOf": "{score} / 100",
+      "restorativeShort": "Deep+REM",
+      "restorative": "Deep + REM",
+      "window": "Window",
+      "asleep": "Asleep",
+      "span": "{from} → {to}",
+      "tileEmpty": "Nothing synced for last night or the night before",
+      "latest": "Most recent night on record: {date}",
+      "emptyTitle": "No sleep recorded",
+      "emptyDetail": "Nothing has synced for last night or the night before."
+    },
+    "activity": {
+      "today": "Activity today",
+      "latest": "Latest activity",
+      "ofGoal": "{percent}% of {goal}",
+      "distance": "Distance",
+      "active": "Active",
+      "brisk": "{minutes} min brisk",
+      "energy": "Energy",
+      "activeKcal": "{kcal} active kcal",
+      "tileEmpty": "No steps synced today or yesterday",
+      "notSynced": "{date} · today hasn't synced yet",
+      "emptyTitle": "No movement data",
+      "emptyDetail": "No steps have synced today or yesterday."
+    },
+    "heart": {
+      "label": "Resting HR",
+      "hrv": "HRV",
+      "usualHrv": "Usual HRV",
+      "empty": "No reading for last night or the night before"
+    },
+    "breathing": {
+      "label": "Breathing",
+      "usual": "Usual",
+      "bloodOxygen": "Blood oxygen",
+      "empty": "No reading for last night or the night before"
+    },
+    "vitals": {
+      "title": "Overnight vitals",
+      "hrv": "HRV",
+      "hrvValue": "{value} <muted>(usual {usual})</muted>",
+      "breathing": "Breathing",
+      "bloodOxygen": "Blood oxygen",
+      "latest": "Most recent vitals on record: {date}",
+      "emptyTitle": "No vitals recorded",
+      "emptyDetail": "No overnight vitals have synced for last night or the night before."
+    },
+    "week": {
+      "title": {
+        "week": "This week",
+        "month": "This month"
+      },
+      "period": "Period",
+      "tabs": {
+        "week": "Week",
+        "month": "Month"
+      },
+      "battery": "Body battery",
+      "monthChart": "Body battery each morning over the last 30 days",
+      "monthChartRange": "Body battery each morning over the last 30 days, averaged {avg}, between {min} and {max}",
+      "monthDay": "{date}: {score}",
+      "monthDayEmpty": "{date}: no score",
+      "average": "Averaged {avg}, between {min} and {max}",
+      "weekChart": "Body battery each morning: {days}",
+      "weekDay": "{day} {score}",
+      "weekDayEmpty": "{day} no score",
+      "weekDays": "{first}, {rest}",
+      "sleep": {
+        "label": "Sleep",
+        "unit": "a night",
+        "none": "{period, select, month {No nights recorded in the last 30 days} other {No nights recorded this week}}",
+        "needApprox": "~{need}",
+        "about": "{coverage, select, partial {About your {need} need, on average · {nights} of {count, plural, one {# night} other {# nights}} recorded} other {About your {need} need, on average}}",
+        "under": "{coverage, select, partial {{gap} under your {need} need, on average · {nights} of {count, plural, one {# night} other {# nights}} recorded} other {{gap} under your {need} need, on average}}",
+        "over": "{coverage, select, partial {{gap} over your {need} need, on average · {nights} of {count, plural, one {# night} other {# nights}} recorded} other {{gap} over your {need} need, on average}}"
+      },
+      "active": {
+        "brisk": "Brisk minutes",
+        "zone": "Active zone minutes",
+        "perWeek": "a week",
+        "ofWho": "of {target}",
+        "none": "{period, select, month {No activity minutes recorded in the last 30 days} other {No activity minutes recorded this week}}",
+        "pastMonth": "{unit, select, brisk {Past the WHO's weekly bar on average; vigorous minutes count double} other {Past the WHO's weekly bar on average; harder minutes count double}}",
+        "shortMonth": "{unit, select, brisk {{minutes} a week short of the WHO's bar on average; vigorous minutes count double} other {{minutes} a week short of the WHO's bar on average; harder minutes count double}}",
+        "pastWeek": "{unit, select, brisk {Past the WHO's weekly bar; vigorous minutes count double} other {Past the WHO's weekly bar; harder minutes count double}}",
+        "toGo": "{unit, select, brisk {{minutes} to go for the WHO's weekly bar; vigorous minutes count double} other {{minutes} to go for the WHO's weekly bar; harder minutes count double}}"
+      },
+      "steps": {
+        "label": "Steps",
+        "unit": "a day",
+        "none": "{period, select, month {No finished days with steps in the last 30 days} other {No finished days with steps this week}}",
+        "reached": "{goal} or more on {days} of {count, plural, one {# full day} other {# full days}}"
+      }
+    }
+  },
+  "activity": {
+    "empty": {
+      "title": "No movement data in this window",
+      "detail": "Steps, distance and active minutes come from the activity_and_fitness scope. Data streams, in Settings, shows exactly what each stream returned."
+    },
+    "day": {
+      "title": "Today so far",
+      "latest": "Latest day, {date}",
+      "goalsMet": "{met} of 2 goals met",
+      "stepGoalMet": "Step goal met",
+      "rings": "Steps: {steps} of {stepGoal}. Brisk minutes: {brisk} of {brislbsoal}.",
+      "ringsNoBrisk": "Steps: {steps} of {stepGoal}. Brisk minutes: not recorded.",
+      "steps": "Steps",
+      "stepGoal": "/ {goal}",
+      "brisk": "Brisk minutes",
+      "brislbsoal": "/ {goal} min",
+      "distance": "Distance",
+      "energy": "Active energy"
+    },
+    "lastSevenDays": {
+      "title": "Last 7 days",
+      "perDay": "{count, plural, one {{steps}<muted> step a day</muted>} other {{steps}<muted> steps a day</muted>}}",
+      "vsWeekBefore": "{change}<muted> vs the week before</muted>",
+      "bars": {
+        "label": "Steps each day: {days}.",
+        "day": "{date}, {steps}",
+        "noData": "{date}, no data",
+        "separator": "; "
+      },
+      "daysOver": "Days over {goal}",
+      "daysOverCount": "{over}<muted> of {total}</muted>",
+      "brisk": "Brisk minutes",
+      "briskTotal": "{minutes}<muted> of {target}</muted>",
+      "vsThreeWeeks": "vs 3 weeks before",
+      "vsThreeWeeksLong": "vs the 3 weeks before",
+      "ramp": {
+        "value": "{change}<muted> · {verdict}</muted>",
+        "same": "about the same",
+        "less": "{percent}% less",
+        "more": "{percent}% more",
+        "fast": "a fast ramp",
+        "easing": "easing off",
+        "steady": "steady"
+      }
+    },
+    "overTime": {
+      "title": "Your movement over time"
+    },
+    "summary": {
+      "typicalDay": "Typical day",
+      "typicalSteps": "{count, plural, one {{steps} step} other {{steps} steps}}",
+      "bestDay": "Best day",
+      "bestDayValue": "{steps}<muted> · {date}</muted>",
+      "daysOver": "Days over {goal}",
+      "distance": "Distance",
+      "energy": "Active energy",
+      "brisk": "Brisk minutes",
+      "briskWeek": "{minutes} a week<muted> · target {target}</muted>",
+      "firstToLast": "First week to last",
+      "stepsADay": "{count, plural, one {{change}<muted> step a day</muted>} other {{change}<muted> steps a day</muted>}}"
+    },
+    "chips": {
+      "label": "Chart",
+      "steps": "Steps",
+      "energy": "Energy",
+      "intensity": "Intensity",
+      "distance": "Distance",
+      "weekdays": "Weekdays",
+      "weekly": "Weekly totals"
+    },
+    "weekdays": {
+      "title": "Which days you move",
+      "hint": "Average steps on each day of the week."
+    },
+    "steps": {
+      "title": "Daily steps",
+      "hint": "Solid bars cleared your goal of {goal}. Missing bars are days the tracker recorded nothing — they're excluded from every average on this page."
+    },
+    "energy": {
+      "title": "Active energy",
+      "hint": "Above your basal rate — the part you moved for."
+    },
+    "mix": {
+      "title": "Intensity mix",
+      "vsToday": "avg vs today so far (min):",
+      "vsLatest": "avg vs latest (min):",
+      "lightMinutes": "Light minutes",
+      "moderateMinutes": "Moderate minutes",
+      "vigorousMinutes": "Vigorous minutes",
+      "pair": "{average}/{latest}",
+      "note": "<light>Light</light> minutes accumulate from daily life; <moderate>Moderate</moderate> and <vigorous>Vigorous</vigorous> are the ones guidelines count. {target, plural, one {# brisk minute a week is the usual target.} other {# brisk minutes a week is the usual target.}}",
+      "light": "Light",
+      "moderate": "Moderate",
+      "vigorous": "Vigorous"
+    },
+    "distance": {
+      "title": "Distance",
+      "hint": "From the reported distance stream, not estimated from step count."
+    },
+    "weekly": {
+      "title": "Weekly totals",
+      "hint": "Monday to Sunday, finished weeks only. Weeks with fewer than four recorded days are left out.",
+      "days": "{days}/7 days",
+      "showLatest": "Show the latest {count}",
+      "showAll": "{count, plural, one {Show all # week} other {Show all # weeks}}"
+    }
+  },
+  "sleep": {
+    "stages": {
+      "deep": "Deep",
+      "light": "Light",
+      "rem": "REM",
+      "awake": "Awake"
+    },
+    "empty": {
+      "title": "No sleep data in this window",
+      "detail": "Sleep sessions come from the sleep scope."
+    },
+    "night": {
+      "last": "Last night",
+      "latest": "Latest night",
+      "score": {
+        "title": "Sleep score",
+        "tiers": {
+          "excellent": "Excellent",
+          "good": "Good",
+          "fair": "Fair",
+          "poor": "Poor"
+        },
+        "duration": {
+          "label": "Duration",
+          "detail": "{duration} asleep · full marks at 7–9h"
+        },
+        "restoration": {
+          "label": "Restoration",
+          "detail": "{percent}% deep + REM · full marks at 45%",
+          "noStages": "no stage data · scored at the midpoint"
+        },
+        "efficiency": {
+          "label": "Efficiency",
+          "detail": "{percent}% of time in bed asleep · full marks at 100%"
+        }
+      }
+    },
+    "architecture": {
+      "title": "Sleep architecture",
+      "window": {
+        "label": "Window",
+        "short": "Window",
+        "value": "{bed} → {wake}",
+        "shortValue": "{bed}–{wake}",
+        "hint": "asleep to awake",
+        "more": "From falling asleep at {bed} to waking at {wake}."
+      },
+      "efficiency": {
+        "label": "Efficiency",
+        "short": "Efficiency",
+        "hint": "of time in bed spent asleep; 90%+ is good",
+        "more": "{percent}% of your time in bed was spent asleep. 90% or more is good."
+      },
+      "cycles": {
+        "label": "Cycles",
+        "short": "Cycles",
+        "each": "~{minutes} min each",
+        "hint": "light → deep → REM loops, usually 90–110 min",
+        "more": "{count, plural, one {# light → deep → REM loop; 90–110 min is usual. Wrist staging can merge bouts, so cycles can look fewer and longer.} other {# light → deep → REM loops; 90–110 min is usual. Wrist staging can merge bouts, so cycles can look fewer and longer.}}",
+        "moreWithLength": "{count, plural, one {# light → deep → REM loop of about {minutes} min each; 90–110 min is usual. Wrist staging can merge bouts, so cycles can look fewer and longer.} other {# light → deep → REM loops of about {minutes} min each; 90–110 min is usual. Wrist staging can merge bouts, so cycles can look fewer and longer.}}"
+      },
+      "remLatency": {
+        "label": "REM latency",
+        "short": "REM latency",
+        "hint": "to your first REM; usually 60–120 min",
+        "more": "{minutes} min from falling asleep to your first REM; 60–120 min is usual. Unusually early REM is the shift to watch.",
+        "moreUnknown": "Time from falling asleep to your first REM; 60–120 min is usual. Unusually early REM is the shift to watch."
+      },
+      "deepEarly": {
+        "label": "Deep, first third",
+        "short": "Deep early",
+        "hint": "of deep sleep came early; a high share is normal",
+        "more": "{percent}% of the night’s deep sleep came in its first third. A high share is normal; a falling share over weeks matters more.",
+        "moreUnknown": "How much of the night’s deep sleep came in its first third. A high share is normal; a falling share over weeks matters more."
+      },
+      "transitions": {
+        "label": "Transitions",
+        "short": "Transitions",
+        "hint": "stage changes per hour asleep",
+        "more": "{count, plural, one {# stage change per hour asleep.} other {# stage changes per hour asleep.}}",
+        "moreUnknown": "How often you switched stages, per hour asleep."
+      },
+      "awakenings": {
+        "label": "Awakenings, 5 min+",
+        "short": "Awakenings",
+        "hint": "wake-ups long enough to be staged",
+        "more": "{count, plural, =0 {No wake-ups of 5 min or more that the watch staged.} one {# wake-up of 5 min or more that the watch staged.} other {# wake-ups of 5 min or more that the watch staged.}}"
+      },
+      "onset": {
+        "label": "Fell asleep in",
+        "short": "Asleep in",
+        "hint": "near zero night after night can mean sleep debt",
+        "more": "{minutes} min to fall asleep. Near zero night after night can be a sign of sleep debt."
+      },
+      "awakeAfterOnset": {
+        "label": "Awake after onset",
+        "short": "Awake after",
+        "hint": "all wake time, including the ticks above the chart",
+        "more": "{minutes} min awake after first falling asleep, including the brief restless wake-ups marked as ticks above the chart."
+      },
+      "pick": "Tap a measure to see what it means.",
+      "caveat": "Wrist staging is an estimate and can merge bouts, so the trend against your own history says more than any one night.",
+      "empty": "No sleep session available to draw."
+    },
+    "lastSeven": {
+      "title": "Last 7 nights",
+      "average": "{duration}<unit> a night</unit>",
+      "change": "{change}<muted> min vs the 7 before</muted>",
+      "needAbout": "~{hours}",
+      "bars": {
+        "label": "Time asleep each night against your {need} need: {nights}.",
+        "night": "{date}, {duration}, score {score}",
+        "missing": "{date}, not recorded",
+        "separator": "; ",
+        "score": "score"
+      },
+      "atNeed": {
+        "label": "Nights at your {need} need",
+        "value": "{count}<muted> of {total}</muted>"
+      },
+      "debt": {
+        "label": "Sleep debt",
+        "owed": "{hours}<muted> h short</muted>",
+        "banked": "{hours}<muted> h banked</muted>"
+      },
+      "spread": {
+        "label": "Bedtime spread",
+        "value": "{spread, select, steady {{minutes}<muted> min<note> · steady</note></muted>} variable {{minutes}<muted> min<note> · variable</note></muted>} other {{minutes}<muted> min<note> · irregular</note></muted>}}"
+      }
+    },
+    "overTime": {
+      "title": "Your sleep over time",
+      "chips": {
+        "label": "Chart",
+        "window": "Window",
+        "duration": "Duration",
+        "rem": "REM",
+        "deep": "Deep",
+        "naps": "Naps"
+      }
+    },
+    "summary": {
+      "typicalNight": "Typical night",
+      "typicalEfficiency": "Typical efficiency",
+      "typicalRestingHr": "Typical resting HR",
+      "longestNight": "Longest night",
+      "firstToLast": "First week to last",
+      "change": "{change}<muted> min a night</muted>"
+    },
+    "naps": {
+      "title": "Naps",
+      "hint": "Sleep outside your main night.",
+      "total": "{count, plural, one {<value>#</value> nap · <value>{length}</value>} other {<value>#</value> naps · <value>{length}</value>}}",
+      "none": "{count, plural, one {No naps in this # day.} other {No naps in these # days.}}",
+      "times": "{from} → {to}",
+      "showLatest": "Show the latest {count}",
+      "showAll": "{count, plural, one {Show all # nap} other {Show all # naps}}"
+    },
+    "window": {
+      "title": "Sleep window",
+      "empty": "No recorded nights in this span.",
+      "bars": "{bucket, select, day {One bar per night, bed to wake, coloured by stage.} week {One bar per week: its typical bedtime and time in bed, coloured by average stage.} other {One bar per month: its typical bedtime and time in bed, coloured by average stage.}}",
+      "lines": "{count, plural, one {The dashed lines are your average bedtime and wake time over this # night, shaded by how much they vary.} other {The dashed lines are your average bedtime and wake time over these # nights, shaded by how much they vary.}}",
+      "noLines": "Your average bedtime and wake time appear once there are three nights.",
+      "emptyRows": "{bucket, select, day {Empty rows are nights with no record.} week {Empty rows are weeks with no record.} other {Empty rows are months with no record.}}",
+      "regularity": {
+        "title": "Sleep regularity",
+        "bands": {
+          "excellent": {
+            "label": "VERY REGULAR",
+            "text": "You fall asleep and wake at nearly the same times every day."
+          },
+          "good": {
+            "label": "REGULAR",
+            "text": "Your timing holds fairly steady from night to night."
+          },
+          "bad": {
+            "label": "IRREGULAR",
+            "text": "Your timing shifts by hours from night to night. Regular timing predicts how you feel better than total hours do."
+          },
+          "critical": {
+            "label": "VERY IRREGULAR",
+            "text": "No steady schedule in these nights: your body clock rarely gets the same day twice."
+          }
+        },
+        "basis": "{count, plural, one {Scored from how often you're asleep or awake at the same clock times on back-to-back days (# pair of nights).} other {Scored from how often you're asleep or awake at the same clock times on back-to-back days (# pairs of nights).}}",
+        "needsNights": "Needs five back-to-back recorded nights in this span."
+      },
+      "chart": "Sleep sessions against your average sleep window",
+      "chartNoAverage": "Sleep sessions",
+      "averageBed": "avg bed {time}",
+      "averageBedNarrow": "bed {time}",
+      "averageWake": "avg wake {time}",
+      "averageWakeNarrow": "wake {time}",
+      "stage": "{bucket, select, day {{date} · {stage} {minutes} min} other {{date} · {stage} {minutes} min a night}}",
+      "bedOffset": "{offset} bed",
+      "averageWindow": "avg window {bed}–{wake}"
+    },
+    "duration": {
+      "title": "Sleep duration",
+      "hint": "Time asleep each night, not counting time awake in bed."
+    },
+    "rem": {
+      "title": "REM sleep",
+      "hint": "Usually about 20–25% of a night."
+    },
+    "deep": {
+      "title": "Deep sleep",
+      "hint": "Usually about 15–20% of a night, most of it early."
+    }
+  },
+  "vitals": {
+    "empty": {
+      "title": "No vitals data in this window",
+      "detail": "Metrics come from the health_metrics_and_measurements scope."
+    },
     "latest": {
-      "weight": {
-        "label": "Latest Weight",
-        "fromPrevious": "from previous weigh-in"
+      "hrv": {
+        "label": "HRV",
+        "empty": "No HRV readings yet"
       },
-      "bmi": {
-        "label": "Body Mass Index (BMI)",
-        "fromPrevious": "from previous",
-        "needsHeight": "Add height in settings to see BMI"
+      "restingHr": {
+        "label": "Resting HR"
       },
+      "breathing": {
+        "label": "Breathing",
+        "empty": "No breathing readings yet"
+      },
+      "bloodOxygen": {
+        "label": "Blood oxygen",
+        "empty": "No blood oxygen readings yet"
+      },
+      "usual": "Usual",
+      "from": "From {date}"
+    },
+    "heartRate": {
+      "title": "Heart rate",
+      "subtitle": "{view, select, now {{count, plural, =0 {{dates} · no readings} one {{dates} · # reading · latest {time}} other {{dates} · # readings · latest {time}}}} other {{count, plural, =0 {{dates} · no readings} one {{dates} · # reading} other {{dates} · # readings}}}}",
+      "stats": {
+        "lowest": "Lowest",
+        "average": "Average",
+        "highest": "Highest"
+      },
+      "zoom": {
+        "label": "Zoom",
+        "threeDays": "3d",
+        "twentyFourHours": "24h",
+        "sixHours": "6h",
+        "twoHours": "2h",
+        "thirtyMinutes": "30m"
+      },
+      "backToNow": "Back to now",
+      "chart": "{count, plural, =0 {Heart rate, {summary}: lowest none, average none, highest none bpm. The arrow keys move through the days; plus and minus zoom.} other {Heart rate, {summary}: lowest {lowest}, average {average}, highest {highest} bpm. The arrow keys move through the days; plus and minus zoom.}}",
+      "tooltip": "{span, select, days {{zoned, select, yes {{date} {time} · {bpm} bpm · {zone}} other {{date} {time} · {bpm} bpm}}} other {{zoned, select, yes {{time} · {bpm} bpm · {zone}} other {{time} · {bpm} bpm}}}}",
+      "zones": {
+        "light": "Light",
+        "moderate": "Moderate",
+        "vigorous": "Vigorous",
+        "peak": "Peak"
+      },
+      "zonesSource": "Your zones, updated daily by Google Health."
+    },
+    "trends": {
+      "title": "Your vitals over time",
+      "chips": {
+        "label": "Metric"
+      },
+      "hrv": {
+        "chip": "HRV",
+        "title": "HRV",
+        "hint": "A night outside your usual range is unusual for you, in either direction."
+      },
+      "restingHr": {
+        "chip": "Resting HR",
+        "title": "Resting heart rate",
+        "hint": "Nights above your usual range often follow hard training, alcohol, heat, short sleep or a cold coming on."
+      },
+      "breathing": {
+        "chip": "Breathing",
+        "title": "Breathing rate",
+        "hint": "Breaths per minute, averaged over the night."
+      },
+      "bloodOxygen": {
+        "chip": "Blood oxygen",
+        "title": "Blood oxygen",
+        "hint": "Each night’s average. For healthy adults, {low} to {high}% is normal.",
+        "normal": "Normal, {low}–{high}%"
+      },
+      "skinTemp": {
+        "chip": "Skin temp",
+        "title": "Skin temperature",
+        "hint": "Change from your own baseline, in °C. Only the shift matters, not the reading itself."
+      },
+      "vo2Max": {
+        "chip": "VO₂ max",
+        "title": "Cardio fitness",
+        "hint": "Your watch’s VO₂ max estimate. It moves slowly, over weeks."
+      },
+      "latest": "latest {value}",
+      "average": "{days}-day average {value}",
+      "change": "{change}<muted> from the first week to the last</muted>"
+    }
+  },
+  "body": {
+    "profile": {
+      "title": "Profile",
+      "age": "Age",
+      "ageSource": "From your Google Health profile",
+      "gender": "Gender",
+      "genders": {
+        "unset": "Not set",
+        "female": "Female",
+        "male": "Male",
+        "other": "Other"
+      },
+      "height": "Height"
+    },
+    "empty": {
+      "loading": "Loading history…",
+      "title": "No weigh-ins yet",
+      "detail": "Weight and body fat come from manual entries or smart scales."
+    },
+    "latest": {
+      "from": "From {date}, {ago}",
       "ago": {
         "today": "today",
         "yesterday": "yesterday",
-        "days": "{count} days ago",
-        "weeks": "{count} weeks ago",
-        "months": "{count} months ago"
+        "days": "{count, plural, one {# day ago} other {# days ago}}",
+        "weeks": "{count, plural, one {# week ago} other {# weeks ago}}",
+        "months": "{count, plural, one {# month ago} other {# months ago}}"
       },
-      "from": "from {date} ({ago})"
+      "weight": {
+        "label": "Weight",
+        "fromPrevious": "From previous"
+      },
+      "bmi": {
+        "label": "BMI",
+        "fromPrevious": "From previous",
+        "needsHeight": "Needs your height, which comes from Google Health."
+      }
     },
     "composition": {
-      "title": "Latest Body Composition",
-      "lean": "Lean Mass",
-      "fat": "Fat Mass",
-      "bar": "Lean mass {lean} ({leanShare}%), fat mass {fat} ({fatShare}%)",
+      "title": "Body composition",
+      "lean": "Lean mass",
+      "fat": "Body fat",
+      "bar": "{lean} lean mass, {leanShare} percent; {fat} body fat, {fatShare} percent",
       "fromPrevious": "{change} from previous"
     },
     "overTime": {
-      "title": "History & Trends"
-    },
-    "empty": {
-      "title": "No weigh-ins recorded yet",
-      "detail": "Weigh-ins synchronized from Google Health will populate your history, charts, and body composition changes automatically.",
-      "loading": "Loading your body metrics window..."
+      "title": "Your body over time"
     },
     "summary": {
-      "weighIns": "Weigh-ins recorded",
-      "none": "none over past {count} days",
-      "loading": "computing statistics...",
-      "trend": "Weight trend",
-      "trendValue": "{change} on average",
-      "highest": "Highest weight",
-      "lowest": "Lowest weight",
-      "firstToLast": "Overall change"
-    },
-    "weightChart": {
-      "title": "Weight Progression",
-      "hint": "Measured alongside your computed daily trend baseline",
-      "latest": "Latest: {weight}"
-    },
-    "fatChart": {
-      "title": "Body Fat Percentage",
-      "latest": "Latest: {fat}"
+      "weighIns": "Weigh-ins",
+      "loading": "Loading…",
+      "none": "{count, plural, one {None in this # day} other {None in these # days}}",
+      "trend": "Trend",
+      "trendValue": "{change} lbs a week",
+      "highest": "Highest",
+      "lowest": "Lowest",
+      "firstToLast": "First to last"
     },
     "chips": {
-      "label": "Select view metric",
+      "label": "Chart",
       "weight": "Weight",
-      "fat": "Body Fat",
+      "fat": "Body fat",
       "composition": "Composition"
     },
+    "weightChart": {
+      "title": "Weight",
+      "hint": "Each dot is a weigh-in; dashed lines join readings with a gap between them.",
+      "latest": "latest <value>{weight}</value>"
+    },
+    "fatChart": {
+      "title": "Body fat",
+      "latest": "latest <value>{fat}</value>"
+    },
     "compositionTrend": {
-      "title": "Composition Shift Trend",
-      "hint": "{skipped, plural, zero {} other {# outlier reading skipped}}",
-      "readings": "Computed across {pairs} weigh-in pairs over {days} days",
-      "weight": "Net weight trend",
-      "weightValue": "{change} per week",
-      "shareBar": "Composition shift: lean mass {lean}%, fat mass {fat}%",
-      "lean": "Lean mass: {change}",
-      "fat": "Fat mass: {change}",
-      "note": "A composition shift trend estimates whether your continuous structural adjustments consist primarily of clean tissue variations or body fat deviations.",
-      "needsMore": "Requires multiple body fat paired readings across this span to compute composition trends safely."
+      "title": "Composition trend",
+      "hint": "{skipped, plural, =0 {From weigh-ins where the scale also measured body fat.} other {From weigh-ins where the scale also measured body fat. # skipped for mixing devices.}}",
+      "needsMore": "Needs four of them across at least four weeks of this span.",
+      "readings": "{pairs, plural, one {# paired reading} other {# paired readings}} · {days, plural, one {# day} other {# days}}",
+      "weight": "Weight trend",
+      "weightValue": "{change} <unit>lbs a week</unit>",
+      "shareBar": "Lean mass is {lean} percent of the change, fat {fat} percent",
+      "lean": "Lean <b>{change}</b> lbs a week",
+      "fat": "Fat <b>{change}</b> lbs a week",
+      "note": "Scale body fat is approximate, so its trend on the same scale says more than any one reading."
     }
+  },
+  "cycle": {
+    "eyebrow": "Today in your cycle",
+    "day": "Day {day}",
+    "aboutDay": "About day {day} <soft>±{pm}</soft>",
+    "aboutDayPlain": "About day {day}",
+    "dayPm": "Day {day} <soft>±{pm}</soft>",
+    "days": "{count, plural, one {# day} other {# days}}",
+    "daysPm": "{count} <soft>±{pm}</soft> days",
+    "likely": "likely",
+    "span": "{min}–{max}",
+    "signed": "{sign, select, up {+} other {−}}{value} {unit}",
+    "signedValue": "{sign, select, up {+} other {−}}{value}",
+    "phases": {
+      "menstrual": "Menstruation",
+      "follicular": "Follicular",
+      "ovulation": "Ovulation",
+      "earlyLuteal": "Early luteal",
+      "lateLuteal": "Late luteal"
+    },
+    "start": "{source, select, logged {Your period began on {date}. You logged it.} other {Your period likely began around {date}, found in your nights.}}",
+    "next": {
+      "range": "Your next period is likely between <b>{from}</b> and <b>{to}</b>.",
+      "day": "Your next period is likely around <b>{date}</b>.",
+      "early": "Your next period may come between <b>{from}</b> and <b>{to}</b>, an early guess from your first two cycles.",
+      "past": "Your next period was likely by {date}. Cycles run long now and then: the new one shows a few days after it starts, or as soon as you log it.",
+      "collecting": "After {count, plural, one {# more cycle} other {# more cycles}}, Healthier can say when your next period is likely."
+    },
+    "actions": {
+      "logToday": "Log today",
+      "started": "My period started"
+    },
+    "strip": {
+      "label": "{phase}, {about, select, yes {about day {day}} other {day {day}}} of this cycle.{rise, select, yes { The luteal phase likely began around day {riseDay}.} other {}}{next, select, yes { Your next period is likely from day {from} to day {to}.} other {}}",
+      "today": "Today",
+      "next": "Likely next"
+    },
+    "reached": {
+      "start": "{source, select, logged {This cycle began on {date}} other {This cycle likely began around {date}}}",
+      "startDetail": "{source, select, logged {You logged it. Today is day {day}.} other {Found in your nights, give or take {pm} days. Today is about day {day}.}}",
+      "cycles": "Your last {count} cycles ran {min} to {max} days",
+      "cyclesDetail": "{logged, plural, =0 {} one {One began with a period you logged. } other {# began with a period you logged. }}{found, plural, =0 {} one {One was found in your nights. } other {# were found in your nights. }}Logged ones count twice as much, and the middle is {typical} days.",
+      "rise": "Your luteal phase likely began around day {day}",
+      "riseDetail": "Counted back {days} days from your likely next period: the luteal phase runs about that long, and changes little from one cycle to the next.",
+      "early": "{same, select, yes {Your two cycles so far each ran {min} days} other {Your two cycles so far ran {min} to {max} days}}",
+      "earlyDetail": "An early guess, two days wider either side, until there are three cycles to go on.",
+      "next": "{basis, select, early {Your next period may come {min} to {max} days after this cycle began} other {Your next period is likely {min} to {max} days after this cycle began}}",
+      "nextDetail": "That puts it between {from} and {to}."
+    },
+    "found": {
+      "title": "A new cycle, found in your nights",
+      "text": "Your heart rate, HRV and temperature changed the way they do when a period starts, so day 1 was about {date}, give or take a few days.{learned, select, yes { That day allows for how your nights lined up with the periods you confirmed.} other {}}",
+      "confirm": "That's right",
+      "change": "Change the day",
+      "reject": "It wasn't a period",
+      "note": "Confirmed, this cycle counts twice as much in your ranges. Left alone, it still counts, with less weight."
+    },
+    "collecting": {
+      "title": "Finding your rhythm",
+      "text": "Healthier looks for your cycles in your nightly heart rate, HRV, temperature and breathing. It needs a few cycles to be sure of them, or a period you log."
+    },
+    "noRhythm": {
+      "title": "Healthier hasn't found your cycles yet",
+      "text": "Your nights haven't shown a cycle clearly enough to be sure of it. Wrist readings are often too faint for that, and it's common on hormonal contraception, when cycles vary a lot, or when the watch comes off at night.",
+      "logged": "A period you log is certain, and shows your cycles straight away."
+    },
+    "now": {
+      "afterRise": {
+        "of": "of about {days}",
+        "text": "Your luteal phase likely began around day {day}, going by your past cycles. Since then, against the nights before it:"
+      },
+      "beforeRise": {
+        "text": "In your last cycles, the luteal phase likely began on day {days}.",
+        "unknown": "The luteal phase begins after ovulation, around the middle of a cycle."
+      },
+      "rows": {
+        "temp": "Skin temperature",
+        "sleepHr": "Resting heart rate (basal)",
+        "hrv": "HRV"
+      }
+    },
+    "lastPeriod": {
+      "eyebrow": "Last period",
+      "length": "Length",
+      "ongoing": "Still going",
+      "startOnly": "Only its start logged",
+      "heaviest": "Heaviest flow",
+      "usual": "Your usual",
+      "usualRange": "{days} days",
+      "around": "Around {date}",
+      "found": "Found in your nights",
+      "foundDetail": "give or take {pm} days",
+      "notLogged": "Not logged",
+      "logIt": "Log it"
+    },
+    "logged": {
+      "eyebrow": "Logged today",
+      "change": "Change",
+      "add": "Log",
+      "none": "Nothing logged yet."
+    },
+    "flow": {
+      "none": "None",
+      "spotting": "Spotting",
+      "light": "Light",
+      "medium": "Medium",
+      "heavy": "Heavy",
+      "unspecified": "Period"
+    },
+    "symptoms": {
+      "cramps": "Cramps",
+      "headache": "Headache",
+      "bloating": "Bloating",
+      "breasts": "Tender breasts",
+      "back": "Back pain",
+      "acne": "Acne",
+      "tired": "Tired",
+      "lowMood": "Low mood",
+      "irritable": "Irritable",
+      "cravings": "Cravings",
+      "sleep": "Trouble sleeping"
+    },
+    "body": {
+      "title": "Your body through the cycle",
+      "hint": "This cycle, night by night, against your last {count, plural, one {cycle} other {# cycles}}. The grey band is where your past cycles usually were on the same day. Skin temperature is the watch's change from your own baseline. Resting heart rate (basal) is your night's floor: the rate your heart sits at or below for the calmest tenth of your sleep.",
+      "hintFew": "This cycle so far, night by night. Your past cycles show as a band once there are three. Resting heart rate (basal) is your night's floor: the rate your heart sits at or below for the calmest tenth of your sleep.",
+      "legend": {
+        "mine": "This cycle",
+        "usual": "Your past cycles",
+        "period": "Period",
+        "periodFound": "Period found in your nights",
+        "luteal": "Luteal phase",
+        "ovulation": "Ovulation, likely"
+      },
+      "rows": {
+        "temp": "Skin temperature",
+        "sleepHr": "Resting heart rate (basal)",
+        "hrv": "HRV"
+      },
+      "change": "{change} {unit} {direction, select, up {higher} other {lower}} since {about, select, yes {about day {day}} other {day {day}}}",
+      "chart": "{name} through this cycle, against your past cycles",
+      "axisDay": "Day {day}"
+    },
+    "history": {
+      "title": "Your cycles",
+      "hint": "Each bar is one cycle, shaded from phase to phase. Where the colours blend, the day is unsure; a sharp edge is a day you logged. A faded period was found in your nights, and the ± on its length says how far it may be off.",
+      "empty": "Your cycles will show here as Healthier finds them in your nights, or as you log them.",
+      "legend": {
+        "logged": "Period you logged",
+        "found": "Period found in your nights",
+        "ovulation": "Ovulation, likely"
+      },
+      "stats": {
+        "typical": "Typical cycle",
+        "range": "Shortest to longest",
+        "period": "Periods you logged",
+        "days": "days"
+      },
+      "row": "From {date}: {length}{pm, plural, =0 {} other {, give or take {pm} days}}, {source, select, logged {a period you logged} other {a period found in your nights}}{rise, select, yes {, luteal phase from about day {riseDay}} other {}}."
+    },
+    "calendar": {
+      "previous": "Previous month",
+      "next": "Next month",
+      "day": "{date}{notes, select, yes {: {list}} other {}}",
+      "notes": {
+        "today": "today",
+        "period": "a period day",
+        "spotting": "spotting",
+        "found": "a start found in your nights",
+        "rise": "your luteal phase likely began",
+        "ovulation": "ovulation likely",
+        "logged": "something logged",
+        "likely": "your period may start",
+        "likelyDay": "your period is most likely to start"
+      },
+      "legend": {
+        "phases": "Days shaded by phase",
+        "likely": "Likely period",
+        "ovulation": "Ovulation, likely",
+        "logged": "Logged"
+      }
+    },
+    "sheet": {
+      "save": "Save",
+      "private": "Kept on your own server, encrypted.",
+      "day": {
+        "eyebrow": "Cycle day {day}",
+        "eyebrowPlain": "Log a day",
+        "flow": "Bleeding",
+        "flowNote": {
+          "none": "Pick light, medium or heavy on the day a period starts.",
+          "spotting": "Spotting is noted, but it doesn't start a period on its own.",
+          "continues": "Part of the period that started on {date}.",
+          "starts": "This starts a period: day 1 of a new cycle."
+        },
+        "feel": "How you feel",
+        "note": "Notes",
+        "notePlaceholder": "Anything you want to remember about this day"
+      },
+      "start": {
+        "title": "When did your period start?",
+        "suggest": "Your nights suggest {date}.",
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "twoDays": "2 days ago",
+        "another": "Another day",
+        "future": "Days after today can't be picked.",
+        "result": "Day 1 is {date}.",
+        "detail": "Your last cycle ran {days} days, and today is day {day} of the new one.",
+        "short": "That would make your last cycle {days} days{usual, select, yes {, much shorter than your usual {min} to {max}} other {, much shorter than most}}. If it was spotting, log it as spotting instead.",
+        "flow": "How heavy, on that day",
+        "optional": "optional",
+        "note": "A start you confirm counts twice as much as one found in your nights. You can move or delete it later from the calendar."
+      }
+    },
+    "failed": "That change couldn't be saved, so it was undone. Try again in a moment.",
+    "disclaimer": "General wellness information, not medical advice. The phases are estimates from your nights and your log, so Healthier can't tell you when you're fertile, and it isn't a form of contraception. If something about your cycle worries you, talk to a clinician."
+  },
+  "labs": {
+    "intro": {
+      "lead": "Experimental views of <b>multi-week patterns in your wearable data</b>, each against your own usual range.",
+      "notice": {
+        "title": "Not a medical device",
+        "text": "These cards don't detect, screen for or rule out any condition, and a quiet card isn't an all-clear. If you have symptoms or concerns, talk to a clinician."
+      }
+    },
+    "overview": {
+      "label": "Labs at a glance"
+    },
+    "list": {
+      "label": "Labs",
+      "count": "{count, plural, one {# lab} other {# labs}}",
+      "hint": "tap one to open it"
+    },
+    "legend": {
+      "quiet": "nothing found",
+      "collecting": "collecting or waiting",
+      "reported": "from your device",
+      "found": "pattern found"
+    },
+    "sdb": {
+      "title": "Sleep-disordered breathing patterns",
+      "gloss": "How you breathe during sleep",
+      "collecting": {
+        "chip": "Collecting",
+        "glance": "{done} of {total, plural, one {# night} other {# nights}} collected so far",
+        "text": "Learning your usual range",
+        "progress": "{done} of {total, plural, one {# night} other {# nights}}",
+        "note": "Needs about four weeks of nights: 14 to learn your usual range, then 7 recent ones to compare with it."
+      },
+      "pattern": {
+        "chip": "{count, plural, one {# night} other {# nights}} · last 14",
+        "glance": "{count, plural, one {# of your last 14 nights was} other {# of your last 14 nights were}} outside your usual range",
+        "text": "{count} of the last 14 nights had two or more off together",
+        "signalsOff": "{signals, select, oxygenBreathing {Oxygen, breathing} oxygenAwake {Oxygen, time awake} breathingAwake {Breathing, time awake} other {All three}}",
+        "callout": "<b>On {count} of the last 14 nights, two or more of these were outside your usual range together.</b> A cold, alcohol, a stuffy or hot room, altitude or a late meal can all do this. If you also snore heavily, wake unrefreshed or feel very sleepy during the day, that's worth raising with a clinician."
+      },
+      "quiet": {
+        "chip": "No pattern",
+        "glance": "No pattern in your last 14 nights",
+        "text": "No pattern in the last 14 nights",
+        "fired": "{count, plural, one {# night} other {# nights}} had two or more off together; it takes 3 in 14 nights to count.",
+        "single": "{signal, select, oxygen {On {date} only oxygen was off.} breathing {On {date} only breathing was off.} other {On {date} only time awake was off.}} One signal on its own doesn't count.",
+        "singles": "{count, plural, one {# night} other {# nights}} had one signal off. One signal on its own doesn't count.",
+        "none": "Every measured night stayed inside your usual range."
+      },
+      "signals": {
+        "oxygen": "Oxygen",
+        "breathing": "Breathing",
+        "awake": "Time awake"
+      },
+      "grid": {
+        "judged": "The last {count, plural, one {# night} other {# nights}}: {fired, plural, =0 {no night with two signals off together} one {# night with two or more signals off together} other {# nights with two or more signals off together}}",
+        "unjudged": "{measured} of the last {count, plural, one {# night} other {# nights}} measured so far, none judged yet",
+        "keys": {
+          "off": "off for you",
+          "together": "two or more off on one night",
+          "unjudged": "measured, not judged yet",
+          "unmeasured": "not measured yet"
+        }
+      },
+      "stats": {
+        "nights": "Nights measured",
+        "window": "last 6 weeks",
+        "arousals": "Usual arousals",
+        "perHour": "{value}/h"
+      },
+      "watch": "<b>Watches</b> each night's oxygen, breathing rate and time awake against your usual range.",
+      "light": "<b>Lights up</b> when 3 or more of the last 14 nights have two of them off together.",
+      "how": {
+        "footer": "Uses the nightly averages your device reports. Wrist sensors miss a lot during sleep, so a quiet card doesn't rule anything out."
+      }
+    },
+    "strain": {
+      "title": "System Strain Radar",
+      "gloss": "How many of your vitals are off today",
+      "collecting": {
+        "chip": "Collecting",
+        "glance": "Learning your usual ranges",
+        "text": "Learning your usual ranges",
+        "sub": "Needs about four weeks of readings before today can be compared with them."
+      },
+      "waiting": {
+        "chip": "Waiting",
+        "text": "Waiting for today's readings",
+        "none": "Your usual ranges are ready. None of today's four readings has arrived yet.",
+        "some": "Your usual ranges are ready. It compares once two of today's readings are in."
+      },
+      "high": {
+        "chip": "High · {count, plural, one {# signal off} other {# signals off}}",
+        "glance": "High today: {count} of your 4 vitals are off",
+        "text": "{count} of 4 signals off today",
+        "callout": "<b>{signals} were all outside your usual range today.</b> Several at once often follows hard training, short sleep, alcohol, heat or travel, or feeling under the weather."
+      },
+      "elevated": {
+        "chip": "Elevated · 2 signals off",
+        "glance": "Elevated today: 2 of your 4 vitals are off",
+        "text": "2 of 4 signals off today",
+        "sub": "{signals} are outside your usual range. Several at once often follows hard training, short sleep, alcohol, heat or travel."
+      },
+      "baseline": {
+        "chip": "Baseline",
+        "glance": "{count, plural, =0 {Baseline today: none of your vitals are off} one {Baseline today: 1 of your 4 vitals is off} other {Baseline today: # of your 4 vitals are off}}",
+        "text": "Baseline today",
+        "one": "{signal, select, restingHr {Only resting HR is above usual.} breathing {Only breathing rate is above usual.} hrv {Only HRV is below usual.} other {Only skin temperature is above usual.}} One on its own doesn't count.",
+        "allIn": "All four are inside your usual range.",
+        "someIn": "{count, plural, one {Today's # reading so far is inside your usual range.} other {Today's # readings so far are inside your usual range.}}"
+      },
+      "signals": {
+        "restingHr": {
+          "name": "Resting HR",
+          "inText": "resting HR"
+        },
+        "breathing": {
+          "name": "Breathing rate",
+          "inText": "breathing rate"
+        },
+        "hrv": {
+          "name": "HRV",
+          "inText": "HRV"
+        },
+        "skinTemp": {
+          "name": "Skin temp",
+          "inText": "skin temperature"
+        }
+      },
+      "tiles": {
+        "aria": "Today: {restingHr}, {breathing}, {hrv}, {skinTemp}",
+        "status": "{status, select, off {{signal} off} in {{signal} normal} other {{signal} no data}}",
+        "off": "{direction, select, below {Below usual today} other {Above usual today}}",
+        "in": "Normal",
+        "none": "No data"
+      },
+      "scale": {
+        "aria": "{level, select, baseline {Today sits at baseline.} elevated {Today sits at elevated.} other {Today sits at high.}} Baseline is 0 or 1 signals off, Elevated 2, High 3 or 4",
+        "ariaEmpty": "Baseline is 0 or 1 signals off, Elevated 2, High 3 or 4; no position until today's readings arrive",
+        "today": "TODAY",
+        "baseline": "Baseline",
+        "elevated": "Elevated",
+        "high": "High",
+        "baselineRange": "Baseline · 0–1 off",
+        "elevatedRange": "Elevated · 2 off",
+        "highRange": "High · 3–4 off"
+      },
+      "watch": "<b>Watches</b> resting HR, breathing rate, HRV and skin temperature on the latest day.",
+      "light": "<b>Lights up</b> when 2 are off together (Elevated) or 3–4 (High), marking which ones.",
+      "how": {
+        "explainer": "One metric can move because of a late meal or a warm room. When <b>several move at once</b>, it's a clearer sign that something changed, such as hard training, short sleep, alcohol, heat, travel or a cold coming on.",
+        "footer": "Each signal counts as off when it leaves your usual range in the direction that matters: resting HR and breathing rate above it, HRV below it, and skin temperature 0.5 °C or more above."
+      },
+      "cycle": "{signals} {count, plural, one {has moved only as much as it usually does} other {have moved only as much as they usually do}} in this part of your cycle, so {count, plural, one {it isn't} other {they aren't}} counted as off."
+    },
+    "irn": {
+      "title": "Irregular rhythm notifications",
+      "gloss": "Alerts your device sent about your heart rhythm",
+      "reported": {
+        "chip": "Reported",
+        "glance": "Your device sent notifications on {count, plural, one {# day} other {# days}}",
+        "text": "{count, plural, one {# day} other {# days}} with notifications",
+        "count": "{count, plural, one {# notification} other {# notifications}}",
+        "note": "<b>As your device reported them.</b> Healthier doesn't analyse heart rhythm: for anything your device flags, follow its maker's guidance and talk to a clinician."
+      },
+      "unsynced": {
+        "chip": "Not synced",
+        "text": "Not shared with Healthier",
+        "sub": "Its permission wasn't granted, or the last sync couldn't read it."
+      },
+      "none": {
+        "chip": "None synced",
+        "glance": "No notifications from your device",
+        "text": "No notifications synced",
+        "sub": "Nothing in the last {count, plural, one {# day} other {# days}}."
+      },
+      "strip": {
+        "marked": "The last {count, plural, one {# day} other {# days}}, with notifications on {dates}",
+        "none": "The last {count, plural, one {# day} other {# days}}, with no notifications synced",
+        "ghost": "Not synced, so there are no days to show",
+        "notSynced": "not synced",
+        "today": "today"
+      },
+      "watch": "<b>Shows</b> irregular rhythm notifications your device synced to Google Health, by day.",
+      "light": "<b>No notifications</b> doesn't mean your rhythm was checked: many devices look only occasionally, or not at all.",
+      "how": {
+        "footer": "This app does not analyse heart rhythm. For anything your device flags, follow its maker's guidance and talk to a clinician."
+      }
+    },
+    "dip": {
+      "title": "Nocturnal HR dipping",
+      "gloss": "How much your heart rate drops at night",
+      "collecting": {
+        "chip": "Collecting",
+        "glance": "Collecting your daytime heart rate: {done} of {total, plural, one {# day} other {# days}}",
+        "text": "Collecting daytime heart rate",
+        "progress": "{done} of {total, plural, one {# day} other {# days}}",
+        "noteTracking": "The night side is already tracking. Each daily sync adds a day by itself; no action needed.",
+        "note": "Each daily sync adds a day by itself; no action needed."
+      },
+      "pattern": {
+        "higher": "Higher at night",
+        "smaller": "Smaller drop",
+        "glance": "Your heart rate drops only {median}% at night",
+        "glanceHigher": "Your heart rate is higher at night than by day",
+        "callout": "<b>{under} of the last {measured, plural, one {# measured night} other {# measured nights}} dropped less than 10%.</b> {excluded, plural, =0 {} one {# night with several signals off at once was left out. } other {# nights with several signals off at once were left out. }}Single nights never count on their own. Late meals, alcohol, heat, evening exercise and a busy schedule all reduce the drop. If it persists for weeks alongside symptoms, you could mention it to a clinician."
+      },
+      "quiet": {
+        "glance": "Your heart rate drops {median}% at night, {band, select, large {a large drop} other {a typical drop}}",
+        "sub": "{band, select, large {In the large band, over 20%.} other {In the typical 10–20% band.}} {under} of {measured, plural, one {# measured night} other {# measured nights}} dropped less than 10%."
+      },
+      "drop": {
+        "typical": "Typical drop",
+        "large": "Large drop",
+        "small": "Small drop",
+        "higher": "Higher at night",
+        "none": "No pattern"
+      },
+      "answer": {
+        "higher": "Heart rate is {value}% higher at night",
+        "flat": "Heart rate doesn't drop at night",
+        "drops": "Heart rate drops {value}% at night"
+      },
+      "corridor": {
+        "ariaEmpty": "The bands your median drop will be placed on: rise below 0%, small 0 to 10%, typical 10 to 20%, large over 20%",
+        "aria": "Your median drop, {median}%, on the bands: rise below 0%, small 0 to 10%, typical 10 to 20%, large over 20%",
+        "empty": "Your median drop will be marked on these bands",
+        "you": "YOU · {median}%",
+        "rise": "Rise < 0%",
+        "small": "Small 0–10%",
+        "typical": "Typical 10–20%",
+        "large": "Large > 20%"
+      },
+      "stats": {
+        "daytime": "Daytime HR",
+        "daytimeWindow": "7 days",
+        "sleeping": "Sleeping HR",
+        "nonRem": "non-REM",
+        "resting": "Resting HR",
+        "bpm": "{value} bpm",
+        "median": "Median drop",
+        "medianValue": "{value}%",
+        "medianWindow": "30 days",
+        "medianPending": "after 7 days",
+        "under": "Nights under 10%",
+        "underValue": "{count} of {total}"
+      },
+      "watch": "<b>Watches</b> how far your heart rate falls from daytime to non-REM sleep over 30 days.",
+      "light": "<b>Lights up</b> when half or more of the measured nights drop less than 10%.",
+      "how": {
+        "explainer": "Heart rate usually drops during sleep compared with the daytime, often by <b>10–20%</b>. Late meals, alcohol, heat, evening exercise and illness all shift it from night to night, so only a multi-week change is shown.",
+        "footer": "Daytime is the 08:00–20:00 average of your minute-level heart rate; night is your non-REM sleeping heart rate. A 10% drop is a night/day ratio of 0.90. The 10% and 20% lines come from overnight blood-pressure research and are only a rough guide for heart rate."
+      }
+    },
+    "entropy": {
+      "title": "HRV entropy",
+      "gloss": "How varied your heartbeat is each night",
+      "collecting": {
+        "chip": "Collecting",
+        "glance": "Learning your usual range, which takes about 3 weeks",
+        "text": "Learning your usual range",
+        "sub": "Needs about 3 weeks of nights before it can judge a change."
+      },
+      "shift": {
+        "chip": "Shift · {count, plural, one {# night} other {# nights}}",
+        "glance": "Outside your usual range for {count, plural, one {# night} other {# nights in a row}}",
+        "text": "{side, select, below {Below your usual range {count, plural, one {# night} other {# nights}} in a row} other {Above your usual range {count, plural, one {# night} other {# nights}} in a row}}",
+        "callout": "<b>Outside your usual range on {count, plural, one {# recent night} other {# recent nights}}.</b> This metric moves with everyday things: a cold, alcohol, poor sleep, hard training, stress. It doesn't indicate any condition on its own."
+      },
+      "steady": {
+        "chip": "Steady",
+        "glance": "Steady for {count, plural, one {# night} other {# nights}}",
+        "text": "Steady for {count, plural, one {# night} other {# nights}}",
+        "sub": "{count, plural, one {# night fell outside on its own; it takes 3 in a row to count.} other {# nights fell outside on their own; it takes 3 in a row to count.}}"
+      },
+      "plot": {
+        "empty": "No nights with HRV entropy synced yet.",
+        "aria": "The last {count, plural, one {# night} other {# nights}} against your usual range of {low} to {high}",
+        "ariaCollecting": "{count, plural, one {# night} other {# nights}} so far, with no usual range yet",
+        "keys": {
+          "range": "your usual range",
+          "latest": "latest night",
+          "alone": "outside, on its own",
+          "row": "outside, nights in a row",
+          "soFar": "nights so far",
+          "pending": "usual range: after about 3 weeks"
+        }
+      },
+      "stats": {
+        "latest": "Latest night",
+        "baseline": "Your baseline",
+        "range": "Usual range",
+        "rangeValue": "{low}–{high}",
+        "shifted": "Shifted for",
+        "shiftedValue": "{count, plural, one {# night} other {# nights}}"
+      },
+      "watch": "<b>Watches</b> your device's nightly HRV entropy against your usual range.",
+      "light": "<b>Lights up</b> when 3 or more nights in a row, up to the latest, fall outside it on the same side.",
+      "how": {
+        "explainer": "Each night your device summarises how variable the spacing between heartbeats was as a single number. It has no standard scale, so this tracks one thing only: a <b>sustained change against your own baseline</b>.",
+        "footer": "The number is not a measure of heart rhythm."
+      }
+    },
+    "tachy": {
+      "title": "Nocturnal tachycardia",
+      "gloss": "When your heart rate stays high during sleep",
+      "collecting": {
+        "chip": "Collecting",
+        "glance": "Collecting your heart rate through the night: {done} of 7 days",
+        "text": "Collecting whole-night heart rate",
+        "progress": "{done} of {total, plural, one {# day} other {# days}}",
+        "waiting": "No night has had enough heart-rate readings yet; each sync adds more by itself.",
+        "note": "Minute-level detail collects by itself with each sync; no action needed."
+      },
+      "events": {
+        "chip": "{count, plural, one {# stretch} other {# stretches}} · {nights, plural, one {# night} other {# nights}}",
+        "text": "{count, plural, one {# stretch} other {# stretches}} above 100 bpm in {nights, plural, one {# night} other {# nights}}",
+        "time": "{from} → {to} · {minutes} min",
+        "window": "{kind, select, nap {Nap ({from} – {to})} other {Night sleep ({from} – {to})}}",
+        "stages": {
+          "deep": "Deep sleep",
+          "rem": "REM sleep",
+          "light": "Light sleep"
+        },
+        "peak": "peak {bpm} bpm",
+        "callout": "<b>{count, plural, =1 {One stretch.} other {# stretches in {nights, plural, one {# night} other {# nights}}.}}</b> Occasional ones are common. If you notice palpitations, chest pain, dizziness or breathlessness, seek medical care."
+      },
+      "none": {
+        "chip": "None found",
+        "glance": "None above 100 bpm in {count, plural, one {# night} other {# nights}}",
+        "text": "No stretches above 100 bpm",
+        "sub": "In {count, plural, one {# night} other {# nights}} with enough heart-rate data."
+      },
+      "nights": {
+        "aria": "{count, plural, one {One night} other {# nights}} of sleep, as the highest heart rate in each 10 minutes, against the 100 bpm line. {peaks, plural, =0 {No stretch went above it.} one {One stretch went above it.} other {# stretches went above it.}}",
+        "keys": {
+          "line": "100 bpm",
+          "highs": "Highest in each 10 minutes asleep",
+          "peak": "10+ minutes above 100, at its peak"
+        }
+      },
+      "empty": {
+        "aria": "One night of sleep with the 100 bpm line; stretches of ten minutes or more above it would show here",
+        "line": "100 bpm",
+        "hint": "10+ minutes above the line would show here",
+        "asleep": "fell asleep",
+        "woke": "woke up"
+      },
+      "stats": {
+        "nights": "Nights scanned",
+        "stretches": "Stretches",
+        "longest": "Longest",
+        "longestValue": "{minutes} min",
+        "peak": "peak {bpm}"
+      },
+      "watch": "<b>Watches</b> minute-level heart rate through recorded sleep and naps, skipping minutes awake.",
+      "light": "<b>Lights up</b> for any stretch above 100 bpm lasting 10 minutes or more, listed with its peak.",
+      "how": {
+        "explainer": "Fever, alcohol and vivid dreams can all keep your heart rate <b>high during sleep</b>.",
+        "footer": "Wrist readings during sleep can be noisy, and movement or waking raises them."
+      }
+    },
+    "howItWorks": "How it works"
+  },
+  "data": {
+    "sources": {
+      "title": "Devices and sources",
+      "hint": "Google Health combines what your devices and apps send it. Here you can see which one each reading came from, choose which ones count, and which comes first.",
+      "advanced": "Advanced: choose per reading",
+      "simple": "One order for everything",
+      "readings": {
+        "title": "Readings, first choice at the top",
+        "hint": "When two report the same day, the higher one is used. A day from another one is shown, but judged only against that one's own readings."
+      },
+      "kind": {
+        "manual": "Logged by hand",
+        "app": "App",
+        "platform": "{platform, select, FITBIT {Google} HEALTH_CONNECT {through Health Connect} HEALTH_KIT {through Apple Health} GOOGLE_FIT {Google Fit} other {}}",
+        "lastReading": "last reading {date}"
+      },
+      "supplies": {
+        "none": "Nothing in the last {days} days."
+      },
+      "status": {
+        "off": "Not used: its readings are left out of your days and your usual ranges.",
+        "all": "Used on all {count, plural, one {# day} other {# days}} it reported.",
+        "some": "Used on {used} of the {count, plural, one {# day} other {# days}} it reported. On the rest, another device came first.",
+        "none": "Reported {count, plural, one {# day} other {# days}}, but another device came first on each.",
+        "older": "Its earlier readings are kept, and still count in your history."
+      },
+      "move": {
+        "up": "Move {name} up",
+        "down": "Move {name} down"
+      },
+      "totals": {
+        "title": "Daily totals",
+        "hint": "Steps, distance, energy, active and zone minutes, floors and minute heart rate come already added up by Google, so they can't be split by device. You can choose which kinds of source count.",
+        "all": {
+          "name": "Every device and app",
+          "note": "The default. Your watch, the steps your phone counts, and workouts other apps add."
+        },
+        "google": {
+          "name": "Google and Fitbit only",
+          "note": "Your watch, your phone's step count and what you log in Google Health. Leaves out other apps."
+        },
+        "worn": {
+          "name": "Only what you wear",
+          "note": "Your watch or band alone. Leaves out your phone's steps and anything logged by hand."
+        },
+        "confirm": "With this choice, Healthier fetches your daily totals and minute heart rate from Google again. That takes a few minutes, and everything else keeps working.",
+        "apply": "Fetch again",
+        "cancel": "Cancel",
+        "refetching": "Fetching your daily totals from Google again."
+      },
+      "grid": {
+        "hint": "Pick the first choice for each reading. The others fill only what it missed, in the order of the list, and each one's readings are judged against its own.",
+        "reading": "Reading",
+        "off": "Off",
+        "pick": "{reading}: use {name} first",
+        "minute": "Heart rate through the day",
+        "minuteNote": "Google combines it from all your sources, so it can't be chosen per device. It follows the daily totals choice, and so do the Labs that read it and the basal resting heart rate on the Cycle page."
+      },
+      "footer": "A change applies at once, to every page and all your history, with nothing fetched again.",
+      "demo": "In demo mode this shows the demo's devices, and choices aren't kept.",
+      "failed": "Couldn't save that. Try again.",
+      "loading": "Reading your devices and apps…"
+    },
+    "cycle": {
+      "title": "Cycle tracking",
+      "hint": "Off until you turn it on. Google Health doesn't share periods with other apps, so Healthier finds your cycles in your nights and keeps a log of its own.",
+      "tracking": "Cycle page",
+      "trackingNote": "Adds the Cycle page: your cycles, found in your nightly heart rate, HRV, temperature and breathing, and a log of your periods and how you feel.",
+      "todayCards": "Cycle cards on Today",
+      "todayCardsNote": "A card on Today when your period is likely in the next few days, or when your nights show a new cycle has started. Turned off, they stay on the Cycle page.",
+      "otherPages": "Allow for your cycle on other pages",
+      "otherPagesNote": "Vitals, Today and Labs won't call a night unusual when it's only your cycle doing what it usually does. Turned off, they read your nights as if you didn't track cycles. The Cycle page and its cards stay as they are.",
+      "private": "Your log stays on this server, encrypted, and you can delete it on its own.",
+      "off": "Turned off, nothing about cycles shows anywhere. Anything you logged is kept until you delete it.",
+      "delete": "Delete cycle data",
+      "confirm": "Delete your cycle log and settings? This can't be undone.",
+      "deleteFailed": "Your cycle data couldn't be deleted. Try again in a moment.",
+      "failed": "That couldn't be saved. Try again in a moment."
+    },
+    "overview": {
+      "label": "Settings sections",
+      "back": "Back to Settings",
+      "groups": {
+        "data": "Your data",
+        "preferences": "Preferences",
+        "about": "About"
+      },
+      "summaries": {
+        "devices": "{first} first, then {rest}",
+        "devicesNone": "Nothing reported yet",
+        "goals": "{steps} steps · {brisk} brisk min · {sleep} sleep",
+        "cycle": "{tracking, select, on {{cards, select, yes {On · cards on Today} other {On}}} other {Off}}",
+        "facts": "How your numbers are worked out",
+        "account": "{theme, select, dark {Dark theme · Sign out, or disconnect and delete} light {Light theme · Sign out, or disconnect and delete} other {Your device's theme · Sign out, or disconnect and delete}}",
+        "accountDemo": "{theme, select, dark {Dark theme · Leave the demo} light {Light theme · Leave the demo} other {Your device's theme · Leave the demo}}"
+      }
+    },
+    "status": {
+      "label": "Sync status",
+      "synced": {
+        "justNow": "Synced just now",
+        "minutes": "Synced {count, plural, one {# minute} other {# minutes}} ago",
+        "hours": "Synced {count, plural, one {# hour} other {# hours}} ago",
+        "days": "Synced {count, plural, one {# day} other {# days}} ago"
+      },
+      "syncing": "Syncing now",
+      "syncFailed": "Sync failed",
+      "fullSync": "Full sync",
+      "fullSyncHint": "Fetch the whole window from Google again, not just the last few days",
+      "signIn": "Sign in again",
+      "current": {
+        "title": "Your data is up to date",
+        "sub": "Healthier fetches what's new from Google Health on its own, and Full sync fetches your whole window again.",
+        "demo": "This is the demo: made-up days, worked out in this browser."
+      },
+      "behind": {
+        "title": "{list, select, yes {No {streams} since {date}} other {{count} readings haven't come in since {date}}}",
+        "sub": "{count, plural, one {Everything else is in. It fills in as soon as your device records it again.} other {Everything else is in. They fill in as soon as your devices record them again.}}"
+      },
+      "failed": {
+        "title": "{list, select, yes {Healthier couldn't fetch {streams}} other {Healthier couldn't fetch {count} readings}}",
+        "sub": "Google answered the last sync with an error. Data streams shows what it said, and Healthier tries again on the next sync."
+      },
+      "importing": {
+        "title": "Your history is on its way",
+        "sub": "{count, plural, one {Your last day is in.} other {Your last # days are in.}} Older days follow in the baclbsround, and the longer views fill in as they land."
+      },
+      "failing": {
+        "title": "{day, select, today {Healthier hasn't synced since {time}} yesterday {Healthier hasn't synced since yesterday} date {Healthier hasn't synced since {date}} other {Healthier couldn't sync}}",
+        "sub": "Healthier tries again on its next sync, or now with Retry."
+      },
+      "expired": {
+        "title": "Google access has expired",
+        "sub": "Healthier can't read from Google Health until you sign in again. Everything already here stays."
+      },
+      "window": {
+        "label": "Window",
+        "days": "{count, plural, one {# day} other {# days}}",
+        "range": "{from} → {to}"
+      },
+      "history": {
+        "label": "History",
+        "importing": "importing…",
+        "complete": "complete",
+        "incomplete": "incomplete, retrying",
+        "incompleteHint": "Some streams failed to import; they retry after the next sync."
+      },
+      "lastSync": {
+        "label": "Last sync",
+        "requests": "{count, plural, one {# request} other {# requests}}",
+        "milliseconds": "{ms} ms",
+        "seconds": "{seconds} s"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "hint": "How Healthier looks for you, your connection to Google Health, and your data here.",
+      "theme": {
+        "label": "Theme",
+        "text": "Kept with your account, so every device you sign in on shows it.",
+        "textDemo": "Only while the demo lasts.",
+        "options": {
+          "dark": "Dark",
+          "light": "Light",
+          "system": "Match device"
+        },
+        "failed": "Couldn't save that change, so your theme is as it was. Try again."
+      },
+      "google": {
+        "label": "Google Health",
+        "connected": "Connected. Signing out keeps your data here for when you sign back in.",
+        "connectedAs": "Connected as {email}. Signing out keeps your data here for when you sign back in.",
+        "signOut": "Sign out"
+      },
+      "delete": {
+        "label": "Disconnect and delete",
+        "text": "Ends Healthier's access to your Google account and deletes everything it stored for you here: your days, goals, device choices, theme and cycle log. Your data in Google Health isn't touched.",
+        "action": "Disconnect & delete data"
+      },
+      "demo": {
+        "label": "Demo mode",
+        "text": "Made-up days, worked out in this browser. Nothing you change here is kept.",
+        "exit": "Exit demo"
+      }
+    },
+    "goals": {
+      "title": "Goals",
+      "reset": "Reset to defaults",
+      "hint": "Google Health doesn't share the goals you set in Fitbit, so set them here.",
+      "steps": {
+        "label": "Steps",
+        "per": "a day",
+        "less": "Fewer steps",
+        "more": "More steps",
+        "note": "Your outer ring, the steps chart's line and your streaks."
+      },
+      "brisk": {
+        "label": "Brisk minutes",
+        "per": "a day",
+        "less": "Fewer brisk minutes",
+        "more": "More brisk minutes",
+        "noteDays": "{days, plural, =1 {Your inner ring. One day like that reaches the WHO's {minutes} a week.} =2 {Your inner ring. Two days like that reach the WHO's {minutes} a week.} =3 {Your inner ring. Three days like that reach the WHO's {minutes} a week.} =4 {Your inner ring. Four days like that reach the WHO's {minutes} a week.} =5 {Your inner ring. Five days like that reach the WHO's {minutes} a week.} =6 {Your inner ring. Six days like that reach the WHO's {minutes} a week.} =7 {Your inner ring. Seven days like that reach the WHO's {minutes} a week.} other {Your inner ring. # days like that reach the WHO's {minutes} a week.}}",
+        "noteEveryDay": "Your inner ring. Even every day, that stays under the WHO's {minutes} a week."
+      },
+      "sleepNeed": {
+        "label": "Sleep need",
+        "per": "a night",
+        "auto": "Auto",
+        "less": "Less sleep",
+        "more": "More sleep",
+        "hours": "{half, select, yes {{hours}½} other {{hours}}}",
+        "noteAuto": "Worked out from your recent nights, between {min} and {max} hours. Your body battery and sleep debt use it.",
+        "noteOwn": "Your own figure, between {min} and {max} hours. Your body battery and sleep debt use it. <button>Back to auto</button>"
+      },
+      "failed": "Couldn't save that change, so your goals are as they were. Try again."
+    },
+    "intraday": {
+      "title": "Through the day",
+      "span": "{days}d",
+      "less": "Less",
+      "more": "More",
+      "hint": "Minutes of heart rate recorded in each hour over the last {days, plural, one {# day} other {# days}}. Each block is one hour; solid means most of it was recorded.",
+      "hintWeekly": "Minutes of heart rate recorded in each hour, averaged per week over the {days, plural, one {# day} other {# days}} minute data is kept. Gaps show when the watch is usually off.",
+      "today": "Today",
+      "cell": "{date} {time} · {minutes} min recorded",
+      "cellAverage": "{date} {time} · {minutes} min recorded on average, over {days, plural, one {# day} other {# days}}"
+    },
+    "facts": {
+      "title": "Data facts",
+      "hint": "What to know about the numbers Healthier shows you.",
+      "arithmetic": {
+        "lead": "Arithmetic, not AI",
+        "text": "Your body battery, sleep score and insights are worked out with plain arithmetic from your own data. Nothing is written or guessed by AI. Sleep stages and cardio fitness are your watch's own estimates."
+      },
+      "usual": {
+        "lead": "Usual means usual for you",
+        "text": "Anything called usual or unusual is compared with your own last {days, plural, one {# day} other {# days}}, not with other people. One odd day won't change what's normal for you."
+      },
+      "window": {
+        "lead": "Your {days}-day window",
+        "text": "{history, select, shown {Your insights and most charts use your window, the last {days, plural, one {# day} other {# days}}. {viewCount, plural, one {The {views} view adds your history, back to {month}.} other {The {views} views add your history, back to {month}.}} Every sync re-checks the last {refetch, plural, one {# day} other {# days}}, because watches often send data late.} other {Your insights and most charts use your window, the last {days, plural, one {# day} other {# days}}. Every sync re-checks the last {refetch, plural, one {# day} other {# days}}, because watches often send data late.}}"
+      },
+      "missing": {
+        "lead": "Missing days stay blank",
+        "text": "A day with nothing recorded shows a dash, not a zero, and is left out of every average. Today so far joins your averages once the day is over."
+      },
+      "minutes": {
+        "lead": "Heart rate, minute by minute",
+        "text": "Your watch measures your heart rate every few seconds. Healthier keeps one average per minute for the heart rate charts and Labs, so very short spikes are smoothed out."
+      }
+    },
+    "streams": {
+      "title": "Data streams",
+      "hint": {
+        "day": "Everything Healthier reads from Google Health, a block a day: solid where a reading arrived, dark where Google had none. Open one to see where it comes from and what happened on the last fetch.",
+        "week": "Everything Healthier reads from Google Health, a block a week, shaded by how many of its days have a reading: solid is all seven. Open one to see where it comes from and what happened on the last fetch.",
+        "month": "Everything Healthier reads from Google Health, a block a month, shaded by how many of its days have a reading. Open one to see where it comes from and what happened on the last fetch."
+      },
+      "columns": {
+        "days": "Days",
+        "latest": "Latest"
+      },
+      "notKept": "{date} · {stream} · minutes aren't kept this far back",
+      "summary": {
+        "label": "Summary",
+        "ok": "<b>{count}</b> up to date",
+        "behind": "<b>{count}</b> behind",
+        "empty": "<b>{count}</b> with nothing recorded",
+        "unshared": "<b>{count}</b> not shared",
+        "failed": "<b>{count}</b> failed"
+      },
+      "status": {
+        "latest": "{day, select, today {Today} yesterday {Yesterday} other {{date}}}",
+        "behind": "Nothing since {date}",
+        "empty": "Nothing recorded",
+        "unshared": "Not shared",
+        "unauthorized": "No access",
+        "failed": "Failed"
+      },
+      "latestWhen": "{day, select, today {today} yesterday {yesterday} other {on {date}}}",
+      "formFactors": {
+        "WATCH": "Watch",
+        "RING": "Ring",
+        "PHONE": "Phone",
+        "SCALE": "Scale",
+        "FITNESS_BAND": "Fitness Band",
+        "CHEST_STRAP": "Chest Strap",
+        "TABLET": "Tablet",
+        "HEAD_MOUNTED": "Head Mounted",
+        "SMART_DISPLAY": "Smart Display"
+      },
+      "unknownSource": "Unknown",
+      "detail": {
+        "occasional": "{source, select, hand {Last reading {when}, logged by hand.} device {Last reading {when}, from {device}.} other {Last reading {when}.}} These come now and then, so a gap since the last one is normal.",
+        "latestReading": "{source, select, hand {Latest reading {when}, logged by hand.} device {Latest reading {when}, from {device}.} other {Latest reading {when}.}} {coverage}",
+        "latestMinute": "{source, select, hand {Latest minute {when}, logged by hand.} device {Latest minute {when}, from {device}.} other {Latest minute {when}.}} {coverage}",
+        "behind": "Nothing new since {date}. Healthier asks for it on every sync, so it fills in as soon as your device records it again.",
+        "empty": "Google has no readings of this for you: none of your devices record it, or nothing has been logged.",
+        "unshared": "Healthier wasn't given access to this when you connected Google, so it doesn't ask for it. To add it, sign out, sign back in and allow it when Google asks.",
+        "unauthorized": "Google refused access to this on the last fetch. If you didn't allow it when connecting, sign out, sign back in and allow it.",
+        "failed": "Google answered the last fetch with an error, so the days already stored stay as they were. Healthier tries again on the next sync.",
+        "truncated": "{detail} Google had more readings than one fetch takes, so some older ones may be missing."
+      },
+      "coverage": {
+        "everyDay": "Every day in the window has one.",
+        "everyDayMinutes": "Every day in the window has some.",
+        "someDays": "{days, plural, one {# of the {total, plural, one {# day} other {# days}} in the window has one.} other {# of the {total, plural, one {# day} other {# days}} in the window have one.}}",
+        "someDaysMinutes": "{days, plural, one {# of the {total, plural, one {# day} other {# days}} in the window has some.} other {# of the {total, plural, one {# day} other {# days}} in the window have some.}}"
+      },
+      "fetch": {
+        "minutes": "one-minute averages",
+        "totals": "daily totals",
+        "readings": "individual readings",
+        "last": "{how} · last fetch: {requests, plural, one {# request} other {# requests}}, {pages, plural, one {# page} other {# pages}}, {ms} ms",
+        "lastWithStatus": "{how} · last fetch: {requests, plural, one {# request} other {# requests}}, {pages, plural, one {# page} other {# pages}}, {ms} ms, HTTP {status}",
+        "none": "not fetched",
+      "derived": "computed by Healthier from the one-minute heart rate during your main sleep, while cycle tracking is on"
+      },
+      "domains": {
+        "movement": "Activity & Movement",
+        "sleep": "Sleep & Recovery",
+        "cardio": "Vitals & Heart",
+        "body": "Body",
+        "wellbeing": "Wellbeing"
+      },
+      "errors": {
+        "http": "HTTP {status}",
+        "network": "network error",
+        "truncated": "Intraday rollup truncated"
+      }
+    }
+  },
+  "charts": {
+    "tooltip": {
+      "notRecorded": "not recorded",
+      "value": "{value} {unit}",
+      "valueSymbol": "{value}{unit}"
+    },
+    "trend": {
+      "series": "{bucket, select, day {reading} week {weekly average} other {monthly average}}",
+      "legend": {
+        "each": "{bucket, select, day {Each day} week {Each week} other {Each month}}",
+        "average": "{bucket, select, week {{count}-week average} other {{count}-day average}}",
+        "usualRange": "Your usual range"
+      }
+    },
+    "bars": {
+      "averagePerDay": "average per day"
+    },
+    "diverging": {
+      "series": "{bucket, select, day {vs baseline} week {weekly average vs baseline} other {monthly average vs baseline}}"
+    },
+    "hypnogram": {
+      "noTimeline": "This night has stage totals but no segment timeline, so there's no hypnogram to draw.",
+      "label": "Sleep stages, {duration} asleep",
+      "block": "{stage} · {minutes} min · from {time}",
+      "awakening": "Brief awakening at {time}"
+    },
+    "stageLegend": {
+      "briefAwakening": "brief awakening"
+    },
+    "stageBar": {
+      "title": "{stage} {minutes} min"
+    },
+    "coverage": {
+      "dayRecorded": "{date} · {stream} · recorded",
+      "dayMissing": "{date} · {stream} · no data",
+      "bucket": "{total, plural, one {{date} · {stream} · {recorded}/# day recorded} other {{date} · {stream} · {recorded}/# days recorded}}",
+      "count": "{observed}/{total}"
+    },
+    "weekday": {
+      "tooltip": "{count, plural, one {{weekday} · {value} · # day} other {{weekday} · {value} · # days}}",
+      "noData": "{count, plural, one {{weekday} · no data · # day} other {{weekday} · no data · # days}}"
+    },
+    "spark": {
+      "usualRange": "Shaded: your usual range"
+    },
+    "empty": "Nothing recorded in this window"
+  },
+  "streams": {
+    "steps": "Steps",
+    "distance": "Distance",
+    "floors": "Floors climbed",
+    "active-minutes": "Active minutes",
+    "active-zone-minutes": "Active Zone Minutes",
+    "total-calories": "Total energy",
+    "active-energy-burned": "Active energy",
+    "sleep": "Sleep sessions",
+    "heart-rate": "Heart rate (intraday)",
+    "sleep-heart-rate-floor": "Resting heart rate (basal)",
+    "electrocardiogram": "ECG",
+    "irregular-rhythm-notification": "Irregular Rhythm Notification",
+    "daily-resting-heart-rate": "Resting heart rate",
+    "daily-heart-rate-zones": "Heart rate zones",
+    "daily-heart-rate-variability": "Heart-rate variability",
+    "daily-oxygen-saturation": "Blood oxygen",
+    "daily-respiratory-rate": "Breathing rate",
+    "daily-vo2-max": "Cardio fitness (VO₂max)",
+    "daily-sleep-temperature-derivations": "Skin temperature",
+    "weight": "Weight",
+    "body-fat": "Body fat",
+    "height": "Height",
+    "nutrition-log": "Nutrition (Macros)",
+    "hydration-log": "Hydration",
+    "blood-glucose": "Blood glucose"
+  },
+  "streamsInText": {
+    "steps": "steps",
+    "distance": "distance",
+    "floors": "floors climbed",
+    "active-minutes": "active minutes",
+    "active-zone-minutes": "Active Zone Minutes",
+    "total-calories": "total energy",
+    "active-energy-burned": "active energy",
+    "sleep": "sleep sessions",
+    "heart-rate": "minute-by-minute heart rate",
+    "sleep-heart-rate-floor": "basal resting heart rate",
+    "electrocardiogram": "ECG",
+    "irregular-rhythm-notification": "Irregular Rhythm Notifications",
+    "daily-resting-heart-rate": "resting heart rate",
+    "daily-heart-rate-zones": "heart rate zones",
+    "daily-heart-rate-variability": "heart-rate variability",
+    "daily-oxygen-saturation": "blood oxygen",
+    "daily-respiratory-rate": "breathing rate",
+    "daily-vo2-max": "cardio fitness",
+    "daily-sleep-temperature-derivations": "skin temperature",
+    "weight": "weight",
+    "body-fat": "body fat",
+    "height": "height",
+    "nutrition-log": "nutrition",
+    "hydration-log": "hydration",
+    "blood-glucose": "blood glucose"
   }
+}
