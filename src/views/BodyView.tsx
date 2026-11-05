@@ -43,12 +43,6 @@ const formatImperialHeight = (cm: number) => {
   return `${feet}' ${inches}"`;
 };
 
-/** A weight with its unit, "175.0 lbs". */
-const lbsText = (v: number) => `${fixed(kgToLbs(v))} lbs`;
-
-/** A share with its unit, "39.1%". */
-const percentText = (v: number) => `${fixed(v)}${t('units.percent')}`;
-
 /** A change in a neutral voice, "↓ 1.7 lbs" */
 function changeText(deltaKg: number, unit: string, digits = 1): string {
   const deltaLbs = kgToLbs(deltaKg);
@@ -194,7 +188,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         title={t('body.fatChart.title')}
         right={latestFat !== undefined && (
           <span>
-            {rich('body.fatChart.latest', { fat: percentText(latestFat), value: (w) => <span className="text-zinc-300">{w}</span> })}
+            {rich('body.fatChart.latest', { fat: `${fixed(latestFat)}${t('units.percent')}`, value: (w) => <span className="text-zinc-300">{w}</span> })}
           </span>
         )}
       />
@@ -221,3 +215,5 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
             icon={<Weight size={14} className={DOMAIN.body.text} />}
             value={<Value value={kgToLbs(latest.value)} size="md" digits={1} unit="lbs" />}
             chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: kgToLbs(w.value) }))} color={DOMAIN.body.hex} height={28} />}
+            rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, 'lbs')]]}
+            note={daysOld > 14 ? t('body.latest.from', { date: formatCivilLong(latest.date), ago: ago(daysOld) }) : null}
