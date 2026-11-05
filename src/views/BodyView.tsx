@@ -24,23 +24,35 @@ import type { IntradayDays } from '../pipeline/labs';
 const LEAN_HEX = DOMAIN.body.hex;
 const FAT_HEX = 'var(--amber-400)';
 
+const KG_TO_LBS = 2.20462;
+const CM_TO_IN = 0.393700787;
+
+const lbs = (kg: number) => kg * KG_TO_LBS;
+
+const cmToFeetInches = (cm: number) => {
+  const totalInches = cm * CM_TO_IN;
+  const feet = Math.floor(totalInches / 12);
+  const inches = Math.round(totalInches % 12);
+  return `${feet}'${inches}"`;
+};
+
 type BodyChart = 'weight' | 'fat' | 'composition';
 
-/** OVERRIDE: Automatically converts all raw kg inputs into lbs on the fly */
-const fixed = (v: number, digits = 1) => formatNumber(v * 2.20462262185, digits);
+/** A number at a fixed count of decimals, so 108.0 kg doesn't read as 108. */
+const fixed = (v: number, digits = 1) => formatNumber(v, digits);
 
-/** OVERRIDE: Swaps the trailing "kg" symbol text over to read "lbs" safely */
-const kgText = (v: number) => `${fixed(v)} lbs`;
+/** A weight with its unit, "108.0 kg". */
+const kgText = (v: number) => `${fixed(lbs(v))} lbs`;
 
 /** A share with its unit, "39.1%". */
-const percentText = (v: number) => `${fixed(v, 1)}${t('units.percent')}`;
+const percentText = (v: number) => `${fixed(v)}${t('units.percent')}`;
 
-/** OVERRIDE: Modifies delta value strings to scale to the lbs factor */
+/** A change in a neutral voice, "↓ 1.7 kg": whether up or down is welcome is the person's call, not the app's. */
 function changeText(delta: number, unit: string, digits = 1): string {
-  const convertedDelta = delta * 2.20462262185;
-  const shown = Number(Math.abs(convertedDelta).toFixed(digits));
+  const deltaValue = unit === t('units.percent') ? delta : lbs(delta);
+  const shown = Number(Math.abs(deltaValue).toFixed(digits));
   const arrow = shown === 0 ? '' : delta > 0 ? '↑ ' : '↓ ';
-  return `${arrow}${formatNumber(shown, digits)}${unit ? ' lbs/wk' : ' lbs'}`;
+  return `${arrow}${formatNumber(shown, digits)}${unit ? ` ${unit}` : ''}`;
 }
 
 /** How long ago a weigh-in was: weigh-ins are occasional, so its age matters. */
@@ -105,10 +117,10 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const bmiTrail = body.weighIns.map((p) => ({ date: p.date, value: p.value === null ? null : bmi(p.value) }));
 
   // The span in numbers and charts. Weigh-ins are sparse: keep every reading unless there are too many to show.
-  const weightWin = series(window, (d) => d.weightKg);
+  const weightWin = series(window, (d) => d.weightKg !== null ? lbs(d.weightKg) : null);
   const fatWin = series(window, (d) => d.bodyFatPct);
   const weighIns = weightWin.filter((p): p is { date: string; value: number } => p.value !== null);
-  const trend = weightTrend(weightWin);
+  const trend = weightTrend(series(window, (d) => d.weightKg));
   const comp = bodyComposition(window);
   const highest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value > a.value ? p : a), null);
   const lowest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value < a.value ? p : a), null);
@@ -130,16 +142,16 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         {trend && <Row dense={!wide} label={t('body.summary.trend')}>{t('body.summary.trendValue', { change: changeText(trend.kgPerWeek, 'lbs/wk', 2) })}</Row>}
         {highest && (
           <Row dense={!wide} label={t('body.summary.highest')}>
-            {kgText(highest.value)}<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
+            {fixed(highest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
           </Row>
         )}
         {lowest && (
           <Row dense={!wide} label={t('body.summary.lowest')}>
-            {kgText(lowest.value)}<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
+            {fixed(lowest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
           </Row>
         )}
-        {body.weighIns.length >= 2 && (
-          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(body.weighIns[body.weighIns.length - 1].value - body.weighIns[0].value, '')}</Row>
+        {weighIns.length >= 2 && (
+          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText((weighIns[weighIns.length - 1].value - weighIns[0].value) / KG_TO_LBS, 'lbs')}</Row>
         )}
       </div>
     </Card>
@@ -152,15 +164,14 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         right={latestInSpan && (
           <span>
             {rich('body.weightChart.latest', {
-              weight: kgText(latestInSpan.value),
+              weight: `${fixed(latestInSpan.value)} lbs`,
               value: (w) => <span className={DOMAIN.body.text}>{w}</span>,
             })}
           </span>
         )}
       />
       <div className="px-2 pb-3">
-        {/* Forces the trend chart points to multiply by the imperial factor safely */}
-        <TrendChart series={groupSeries(weightWin, weightBucket).map(p => ({ ...p, value: p.value ? p.value * 2.20462262185 : null }))} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit="lbs" format={(v) => fmtNum(v, 1)} meanWindow={null} />
+        <TrendChart series={groupSeries(weightWin, weightBucket)} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit="lbs" format={(v) => fmtNum(v, 1)} meanWindow={null} />
       </div>
     </Card>
   );
@@ -196,12 +207,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
           <Tile
             label={t('body.latest.weight.label')}
             icon={<Weight size={14} className={DOMAIN.body.text} />}
-            value={<Value value={latest.value * 2.20462262185} size="md" digits={1} unit="lbs" />}
-            chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: w.value * 2.20462262185 }))} color={DOMAIN.body.hex} height={28} />}
-            rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, '')]]}
+            value={<Value value={lbs(latest.value)} size="md" digits={1} unit="lbs" />}
+            chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: lbs(w.value) }))} color={DOMAIN.body.hex} height={28} />}
+            rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, 'lbs')]]}
             // Weigh-ins are occasional: one more than two weeks old says when it was.
-            note={daysOld > 14 ? t('body.latest.from', { date: formatCivilLong(latest.date), ago: ago(daysOld) }) : null}
-          />
-        </div>
-        <div className="min-w-0 lg:order-4 grid">
-          <Tile
