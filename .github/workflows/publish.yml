@@ -26,17 +26,13 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # Forces the repository path to lowercase to prevent registry tag errors
-      - name: Downcase Target Path Names
-        run: |
-          echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/healthier:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
-
       - name: Compile and Push Container to GHCR
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.IMAGE_TAG }}
+          # Safely forces the repository path lowercase on the fly to protect registry tags
+          tags: ghcr.io/${{ github.repository_owner }}/healthier:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
