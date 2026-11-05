@@ -1,0 +1,41 @@
+name: Build and Publish Container Image
+
+on:
+  workflow_dispatch: # Allows you to manually click a button to build this anytime
+  push:
+    branches: [ main ] # Builds automatically whenever you make changes to main
+
+permissions:
+  contents: read
+  packages: write # Crucial: Grants the runner permission to push images into your Packages tab
+
+jobs:
+  build-and-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Downcase Target Path Names
+        run: |
+          echo "IMAGE_TAG=ghcr.io/${{ github.repository_owner }}/healthier:latest" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
+
+      - name: Compile and Push Container to GHCR
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile # Using the main root Dockerfile present in your repository
+          push: true
+          tags: ${{ env.IMAGE_TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
