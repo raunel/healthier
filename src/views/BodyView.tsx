@@ -26,19 +26,19 @@ const FAT_HEX = 'var(--amber-400)';
 
 type BodyChart = 'weight' | 'fat' | 'composition';
 
-/** Overridden to dynamically display weights in lbs instead of kg */
+/** A number at a fixed count of decimals, so 108.0 kg doesn't read as 108. */
 const fixed = (v: number, digits = 1) => formatNumber(v * 2.20462262185, digits);
 
-/** Overridden to inject the 'lbs' unit label seamlessly */
+/** A weight with its unit transformed to lbs. */
 const kgText = (v: number) => `${fixed(v)} lbs`;
 
 /** A share with its unit, "39.1%". */
 const percentText = (v: number) => `${formatNumber(v, 1)}${t('units.percent')}`;
 
-/** Overridden to apply the conversion factor to delta change values safely */
+/** A change in a neutral voice, converted to lbs scale */
 function changeText(delta: number, unit: string, digits = 1): string {
-  const convertedDelta = delta * 2.20462262185;
-  const shown = Number(Math.abs(convertedDelta).toFixed(digits));
+  const deltaLbs = delta * 2.20462262185;
+  const shown = Number(Math.abs(deltaLbs).toFixed(digits));
   const arrow = shown === 0 ? '' : delta > 0 ? '↑ ' : '↓ ';
   return `${arrow}${formatNumber(shown, digits)}${unit ? ' lbs/wk' : ' lbs'}`;
 }
@@ -120,6 +120,11 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const latestInSpan = weighIns.at(-1);
   const latestFat = values(fatWin).at(-1);
 
+  // Safe arithmetic processing for historical first-to-last changes
+  const firstWeighIn = weighIns.at(0);
+  const lastWeighIn = weighIns.at(-1);
+  const overallChange = (firstWeighIn && lastWeighIn) ? lastWeighIn.value - firstWeighIn.value : 0;
+
   const summaryCard = (
     <Card className="lg:col-span-4">
       <CardHead title={spanSummaryTitle(spanState)} />
@@ -139,7 +144,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
           </Row>
         )}
         {weighIns.length >= 2 && (
-          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(weighIns[weighIns.length - 1].value - weighIns[0].value, '')}</Row>
+          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(overallChange, '')}</Row>
         )}
       </div>
     </Card>
@@ -159,7 +164,6 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         )}
       />
       <div className="px-2 pb-3">
-        {/* Maps converted values on the fly to the chart renderer */}
         <TrendChart series={groupSeries(weightWin, weightBucket).map(p => ({ ...p, value: p.value ? p.value * 2.20462262185 : null }))} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit="lbs" format={(v) => fmtNum(v, 1)} meanWindow={null} />
       </div>
     </Card>
@@ -204,6 +208,3 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
           />
         </div>
         <div className="min-w-0 lg:order-4 grid">
-          <Tile
-            label={t('body.latest.bmi.label')}
-            icon={<Ruler size={14} className={DOMAIN.body.text} />}
