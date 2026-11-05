@@ -188,7 +188,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         title={t('body.fatChart.title')}
         right={latestFat !== undefined && (
           <span>
-            {rich('body.fatChart.latest', { fat: `${fixed(latestFat)}${t('units.percent')}`, value: (w) => <span className="text-zinc-300">{w}</span> })}
+            {rich('body.fatChart.latest', { fat: `${fixed(latestFat)}%`, value: (w) => <span className="text-zinc-300">{w}</span> })}
           </span>
         )}
       />
@@ -203,7 +203,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
     ...(fatCard ? [{ key: 'fat' as const, label: t('body.chips.fat'), card: fatCard }] : []),
     ...(compCard ? [{ key: 'composition' as const, label: t('body.chips.composition'), card: compCard }] : []),
   ];
-  const shownChart = charts.find((c) => c.key === chart) ?? charts[0];
+  const shownChart = charts.find((c) => c.key === chart) || charts[0];
 
   return (
     <div className="space-y-3">
@@ -217,3 +217,5 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
             chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: kgToLbs(w.value) }))} color={DOMAIN.body.hex} height={28} />}
             rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, 'lbs')]]}
             note={daysOld > 14 ? t('body.latest.from', { date: formatCivilLong(latest.date), ago: ago(daysOld) }) : null}
+          />
+        </div>
