@@ -120,11 +120,6 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const latestInSpan = weighIns.at(-1);
   const latestFat = values(fatWin).at(-1);
 
-  // Safe pre-calculated layout metrics for historical first-to-last tracking changes
-  const firstWeighIn = weighIns.at(0);
-  const lastWeighIn = weighIns.at(-1);
-  const overallChange = (firstWeighIn && lastWeighIn) ? lastWeighIn.value - firstWeighIn.value : 0;
-
   const summaryCard = (
     <Card className="lg:col-span-4">
       <CardHead title={spanSummaryTitle(spanState)} />
@@ -143,8 +138,8 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
             {kgText(lowest.value)}<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
           </Row>
         )}
-        {weighIns.length >= 2 && (
-          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(overallChange, '')}</Row>
+        {body.weighIns.length >= 2 && (
+          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(body.weighIns[body.weighIns.length - 1].value - body.weighIns[0].value, '')}</Row>
         )}
       </div>
     </Card>
@@ -209,3 +204,6 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         </div>
         <div className="min-w-0 lg:order-4 grid">
           <Tile
+            label={t('body.latest.bmi.label')}
+            icon={<Ruler size={14} className={DOMAIN.body.text} />}
+            value={<Value value={latestBmi} size="md" digits={1} />}
