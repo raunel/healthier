@@ -48,7 +48,7 @@
   "units": {
     "bpm": "bpm",
     "ms": "ms",
-    "lbs": "lbs",
+    "kg": "kg",
     "km": "km",
     "kcal": "kcal",
     "percent": "%",
@@ -225,11 +225,11 @@
     "body": {
       "weightDown": {
         "title": "Your weight is slowly going down",
-        "text": "You're losing about {rate} lbs a week. Your latest weigh-in was {weight} lbs on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
+        "text": "You're losing about {rate} kg a week. Your latest weigh-in was {weight} kg on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
       },
       "weightUp": {
         "title": "Your weight is slowly going up",
-        "text": "You're gaining about {rate} lbs a week. Your latest weigh-in was {weight} lbs on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
+        "text": "You're gaining about {rate} kg a week. Your latest weigh-in was {weight} kg on {date}. That's based on {readings, plural, one {# weigh-in} other {# weigh-ins}} over {days, plural, one {# day} other {# days}}, so treat it as a rough guide."
       },
       "weightStale": {
         "title": "Time for a weigh-in",
@@ -241,17 +241,17 @@
       },
       "bodyHoldingSteady": {
         "title": "Your weight is holding steady",
-        "text": "Your weight has stayed within {within} lbs either way of {middle} lbs for {weeks, plural, one {# week} other {# weeks}}, across {count, plural, one {# weigh-in} other {# weigh-ins}}."
+        "text": "Your weight has stayed within {within} kg either way of {middle} kg for {weeks, plural, one {# week} other {# weeks}}, across {count, plural, one {# weigh-in} other {# weigh-ins}}."
       },
       "bodySwings": {
         "title": "Why your weight jumps around",
-        "text": "Your weight can swing by about {swing} lbs from one day to the next.{trend, select, flat { Underneath that, your trend is flat.} down { Underneath that, your trend is going down by about {rate} lbs a week.} up { Underneath that, your trend is going up by about {rate} lbs a week.} other {}} Weighing at the same time each day makes the swings smaller."
+        "text": "Your weight can swing by about {swing} kg from one day to the next.{trend, select, flat { Underneath that, your trend is flat.} down { Underneath that, your trend is going down by about {rate} kg a week.} up { Underneath that, your trend is going up by about {rate} kg a week.} other {}} Weighing at the same time each day makes the swings smaller."
       },
       "bodyComposition": {
         "title": "Your body composition is changing",
         "text": "Over the last {weeks, plural, one {# week} other {# weeks}} you {lean} and {fat}. That's from {pairs, plural, one {# reading} other {# readings}} that measured both.",
-        "lean": "{change, select, same {kept your lean mass about the same} gained {gained {lbs} lbs of lean mass} other {lost {lbs} lbs of lean mass}}",
-        "fat": "{change, select, same {kept your fat about the same} gained {gained {lbs} lbs of fat} other {lost {lbs} lbs of fat}}"
+        "lean": "{change, select, same {kept your lean mass about the same} gained {gained {kg} kg of lean mass} other {lost {kg} kg of lean mass}}",
+        "fat": "{change, select, same {kept your fat about the same} gained {gained {kg} kg of fat} other {lost {kg} kg of fat}}"
       },
       "bodyFatTrend": {
         "title": "{direction, select, down {Your body fat is going down} other {Your body fat is going up}}",
@@ -267,7 +267,7 @@
       },
       "bodySinceStart": {
         "title": "Since you started",
-        "text": "{change, select, lost {You've lost {lbs} lbs since {month}, going from {from} lbs to {to} lbs.} other {You've gained {lbs} lbs since {month}, going from {from} lbs to {to} lbs.}}"
+        "text": "{change, select, lost {You've lost {kg} kg since {month}, going from {from} kg to {to} kg.} other {You've gained {kg} kg since {month}, going from {from} kg to {to} kg.}}"
       }
     },
     "floors": {
@@ -315,9 +315,9 @@
         "titleEmpty": "No recent weigh-ins",
         "textEmpty": "You haven't logged your weight in {count, plural, one {the last # day} other {the last # days}}, so there's no trend to read yet. A few weigh-ins over the next weeks will show it.",
         "titleLatest": "Your latest weigh-in",
-        "textLatest": "Your latest weigh-in was {weight} lbs on {date}. A few more weigh-ins over the next weeks will show your trend.",
+        "textLatest": "Your latest weigh-in was {weight} kg on {date}. A few more weigh-ins over the next weeks will show your trend.",
         "title": "No clear change in your weight",
-        "text": "Your weight trend is moving by less than {threshold} lbs a week either way. Your latest weigh-in was {weight} lbs on {date}."
+        "text": "Your weight trend is moving by less than {threshold} kg a week either way. Your latest weigh-in was {weight} kg on {date}."
       },
       "cycleFloor": {
         "title": "{known, select, yes {Day {day} of your cycle} other {Your cycles}}",
@@ -388,7 +388,7 @@
         "zoneAndSleep": "{opening, select, first {Last week you earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}} and slept {sleep} a night on average.} other { You earned {minutes, plural, one {{minutes} active zone minute} other {{minutes} active zone minutes}} and slept {sleep} a night on average.}}",
         "briskAndSleep": "{opening, select, first {Last week you did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity and slept {sleep} a night on average.} other { You did {minutes, plural, one {{minutes} minute} other {{minutes} minutes}} of brisk activity and slept {sleep} a night on average.}}",
         "hrv": "{level, select, usual {your HRV was about usual} littleAbove {your HRV was a little above usual} littleBelow {your HRV was a little below usual} above {your HRV was above usual} other {your HRV was below usual}}",
-        "weight": "{direction, select, lower {your weigh-ins averaged {lbs} lbs lower than the week before} other {your weigh-ins averaged {lbs} lbs higher than the week before}}",
+        "weight": "{direction, select, lower {your weigh-ins averaged {kg} kg lower than the week before} other {your weigh-ins averaged {kg} kg higher than the week before}}",
         "hrvAndWeight": " {clauses}."
       },
       "monthlyLedger": {
@@ -1023,12 +1023,12 @@
       "latest": "Latest day, {date}",
       "goalsMet": "{met} of 2 goals met",
       "stepGoalMet": "Step goal met",
-      "rings": "Steps: {steps} of {stepGoal}. Brisk minutes: {brisk} of {brislbsoal}.",
+      "rings": "Steps: {steps} of {stepGoal}. Brisk minutes: {brisk} of {briskGoal}.",
       "ringsNoBrisk": "Steps: {steps} of {stepGoal}. Brisk minutes: not recorded.",
       "steps": "Steps",
       "stepGoal": "/ {goal}",
       "brisk": "Brisk minutes",
-      "brislbsoal": "/ {goal} min",
+      "briskGoal": "/ {goal} min",
       "distance": "Distance",
       "energy": "Active energy"
     },
@@ -1476,7 +1476,7 @@
       "loading": "Loading…",
       "none": "{count, plural, one {None in this # day} other {None in these # days}}",
       "trend": "Trend",
-      "trendValue": "{change} lbs a week",
+      "trendValue": "{change} kg a week",
       "highest": "Highest",
       "lowest": "Lowest",
       "firstToLast": "First to last"
@@ -1502,10 +1502,10 @@
       "needsMore": "Needs four of them across at least four weeks of this span.",
       "readings": "{pairs, plural, one {# paired reading} other {# paired readings}} · {days, plural, one {# day} other {# days}}",
       "weight": "Weight trend",
-      "weightValue": "{change} <unit>lbs a week</unit>",
+      "weightValue": "{change} <unit>kg a week</unit>",
       "shareBar": "Lean mass is {lean} percent of the change, fat {fat} percent",
-      "lean": "Lean <b>{change}</b> lbs a week",
-      "fat": "Fat <b>{change}</b> lbs a week",
+      "lean": "Lean <b>{change}</b> kg a week",
+      "fat": "Fat <b>{change}</b> kg a week",
       "note": "Scale body fat is approximate, so its trend on the same scale says more than any one reading."
     }
   },
@@ -2214,7 +2214,7 @@
       },
       "importing": {
         "title": "Your history is on its way",
-        "sub": "{count, plural, one {Your last day is in.} other {Your last # days are in.}} Older days follow in the baclbsround, and the longer views fill in as they land."
+        "sub": "{count, plural, one {Your last day is in.} other {Your last # days are in.}} Older days follow in the background, and the longer views fill in as they land."
       },
       "failing": {
         "title": "{day, select, today {Healthier hasn't synced since {time}} yesterday {Healthier hasn't synced since yesterday} date {Healthier hasn't synced since {date}} other {Healthier couldn't sync}}",
