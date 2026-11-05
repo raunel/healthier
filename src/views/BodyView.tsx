@@ -24,35 +24,22 @@ import type { IntradayDays } from '../pipeline/labs';
 const LEAN_HEX = DOMAIN.body.hex;
 const FAT_HEX = 'var(--amber-400)';
 
-const KG_TO_LBS = 2.20462;
-const CM_TO_IN = 0.393700787;
-
-const lbs = (kg: number) => kg * KG_TO_LBS;
-
-const cmToFeetInches = (cm: number) => {
-  const totalInches = cm * CM_TO_IN;
-  const feet = Math.floor(totalInches / 12);
-  const inches = Math.round(totalInches % 12);
-  return `${feet}'${inches}"`;
-};
-
 type BodyChart = 'weight' | 'fat' | 'composition';
 
 /** A number at a fixed count of decimals, so 108.0 kg doesn't read as 108. */
 const fixed = (v: number, digits = 1) => formatNumber(v, digits);
 
 /** A weight with its unit, "108.0 kg". */
-const kgText = (v: number) => `${fixed(lbs(v))} lbs`;
+const kgText = (v: number) => `${fixed(v)} ${t('units.kg')}`;
 
 /** A share with its unit, "39.1%". */
 const percentText = (v: number) => `${fixed(v)}${t('units.percent')}`;
 
 /** A change in a neutral voice, "↓ 1.7 kg": whether up or down is welcome is the person's call, not the app's. */
 function changeText(delta: number, unit: string, digits = 1): string {
-  const deltaValue = unit === t('units.percent') ? delta : lbs(delta);
-  const shown = Number(Math.abs(deltaValue).toFixed(digits));
+  const shown = Number(Math.abs(delta).toFixed(digits));
   const arrow = shown === 0 ? '' : delta > 0 ? '↑ ' : '↓ ';
-  return `${arrow}${formatNumber(shown, digits)}${unit ? ` ${unit}` : ''}`;
+  return `${arrow}${fixed(shown, digits)}${unit ? ` ${unit}` : ''}`;
 }
 
 /** How long ago a weigh-in was: weigh-ins are occasional, so its age matters. */
@@ -117,10 +104,10 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const bmiTrail = body.weighIns.map((p) => ({ date: p.date, value: p.value === null ? null : bmi(p.value) }));
 
   // The span in numbers and charts. Weigh-ins are sparse: keep every reading unless there are too many to show.
-  const weightWin = series(window, (d) => d.weightKg !== null ? lbs(d.weightKg) : null);
+  const weightWin = series(window, (d) => d.weightKg);
   const fatWin = series(window, (d) => d.bodyFatPct);
   const weighIns = weightWin.filter((p): p is { date: string; value: number } => p.value !== null);
-  const trend = weightTrend(series(window, (d) => d.weightKg));
+  const trend = weightTrend(weightWin);
   const comp = bodyComposition(window);
   const highest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value > a.value ? p : a), null);
   const lowest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value < a.value ? p : a), null);
@@ -139,19 +126,19 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         <Row dense={!wide} label={t('body.summary.weighIns')}>
           {weighIns.length || (spanState.loading ? t('body.summary.loading') : t('body.summary.none', { count: window.length }))}
         </Row>
-        {trend && <Row dense={!wide} label={t('body.summary.trend')}>{t('body.summary.trendValue', { change: changeText(trend.kgPerWeek, 'lbs/wk', 2) })}</Row>}
+        {trend && <Row dense={!wide} label={t('body.summary.trend')}>{t('body.summary.trendValue', { change: changeText(trend.kgPerWeek, '', 2) })}</Row>}
         {highest && (
           <Row dense={!wide} label={t('body.summary.highest')}>
-            {fixed(highest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
+            {kgText(highest.value)}<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
           </Row>
         )}
         {lowest && (
           <Row dense={!wide} label={t('body.summary.lowest')}>
-            {fixed(lowest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
+            {kgText(lowest.value)}<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
           </Row>
         )}
         {weighIns.length >= 2 && (
-          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText((weighIns[weighIns.length - 1].value - weighIns[0].value) / KG_TO_LBS, 'lbs')}</Row>
+          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(weighIns[weighIns.length - 1].value - weighIns[0].value, t('units.kg'))}</Row>
         )}
       </div>
     </Card>
@@ -164,14 +151,14 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         right={latestInSpan && (
           <span>
             {rich('body.weightChart.latest', {
-              weight: `${fixed(latestInSpan.value)} lbs`,
+              weight: kgText(latestInSpan.value),
               value: (w) => <span className={DOMAIN.body.text}>{w}</span>,
             })}
           </span>
         )}
       />
       <div className="px-2 pb-3">
-        <TrendChart series={groupSeries(weightWin, weightBucket)} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit="lbs" format={(v) => fmtNum(v, 1)} meanWindow={null} />
+        <TrendChart series={groupSeries(weightWin, weightBucket)} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit={t('units.kg')} format={(v) => fmtNum(v, 1)} meanWindow={null} />
       </div>
     </Card>
   );
@@ -207,7 +194,219 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
           <Tile
             label={t('body.latest.weight.label')}
             icon={<Weight size={14} className={DOMAIN.body.text} />}
-            value={<Value value={lbs(latest.value)} size="md" digits={1} unit="lbs" />}
-            chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: lbs(w.value) }))} color={DOMAIN.body.hex} height={28} />}
-            rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, 'lbs')]]}
+            value={<Value value={latest.value} size="md" digits={1} unit={t('units.kg')} />}
+            chart={body.weighIns.length > 1 && <Spark series={body.weighIns} color={DOMAIN.body.hex} height={28} />}
+            rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, t('units.kg'))]]}
             // Weigh-ins are occasional: one more than two weeks old says when it was.
+            note={daysOld > 14 ? t('body.latest.from', { date: formatCivilLong(latest.date), ago: ago(daysOld) }) : null}
+          />
+        </div>
+        <div className="min-w-0 lg:order-4 grid">
+          <Tile
+            label={t('body.latest.bmi.label')}
+            icon={<Ruler size={14} className={DOMAIN.body.text} />}
+            value={<Value value={latestBmi} size="md" digits={1} />}
+            chart={latestBmi !== null && body.weighIns.length > 1 && <Spark series={bmiTrail} color={DOMAIN.body.hex} height={28} />}
+            rows={[[t('body.latest.bmi.fromPrevious'), previous && latestBmi !== null && changeText(latestBmi - bmi(previous.value)!, '')]]}
+            empty={latestBmi === null ? t('body.latest.bmi.needsHeight') : null}
+          />
+        </div>
+      </div>
+
+      {body.composition && <CompositionNow now={body.composition} before={body.previousComposition} />}
+
+      <div className="flex items-center justify-between px-1">
+        <h2 className="text-section uppercase text-page-ink">{t('body.overTime.title')}</h2>
+        <SpanSelector state={spanState} />
+      </div>
+
+      {wide ? (
+        <>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
+            {summaryCard}
+            {weightCard}
+          </div>
+          {(fatCard || compCard) && (
+            <div className={`grid grid-cols-1 ${fatCard && compCard ? 'lg:grid-cols-2' : ''} gap-3`}>
+              {fatCard}
+              {compCard}
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          {summaryCard}
+          {charts.length > 1 && <ChartChips label={t('body.chips.label')} options={charts} value={shownChart.key} onChange={setChart} />}
+          {shownChart.card}
+        </>
+      )}
+
+      <InsightsCarousel observations={insights} page="body" />
+    </div>
+  );
+}
+
+/** Age, gender and height. Gender is the person's to set: Google Health doesn't provide it. */
+function ProfileTile({ age, heightCm, gender, onGender, className = '' }: {
+  age: number | null;
+  heightCm: number | null;
+  gender: Gender | null;
+  onGender: (gender: Gender | null) => void;
+  className?: string;
+}) {
+  // A phone lines the three up side by side; a wide screen stacks them, label by value.
+  const fact = 'flex flex-col gap-0.5 lg:flex-row lg:items-baseline lg:justify-between lg:gap-2';
+  const label = 'text-eyebrow-sm uppercase text-zinc-500 lg:text-detail lg:font-normal lg:normal-case lg:tracking-normal';
+  const value = 'font-display text-number-xs text-zinc-50 tabular-nums';
+  return (
+    <section aria-label={t('body.profile.title')} className={`min-w-0 bg-card border border-card-edge rounded-[18px] p-3.5 lg:p-4 flex flex-col gap-2.5 ${className}`}>
+      <div className="flex items-center justify-between gap-2">
+        <span className="card-title-glance text-zinc-500">{t('body.profile.title')}</span>
+        <User size={14} className="text-zinc-400" />
+      </div>
+      <dl className="grid grid-cols-3 lg:grid-cols-1 gap-2 lg:flex-1 lg:content-around">
+        <div className={fact}>
+          <dt className={label}>{t('body.profile.age')}</dt>
+          <dd className={value} title={age === null ? t('body.profile.ageSource') : undefined}>{age ?? '—'}</dd>
+        </div>
+        <div className={fact}>
+          <dt className={label}>{t('body.profile.gender')}</dt>
+          <dd className="relative inline-flex items-center self-start lg:self-auto">
+            <select
+              aria-label={t('body.profile.gender')}
+              value={gender ?? ''}
+              onChange={(e) => onGender((e.target.value || null) as Gender | null)}
+              className={`appearance-none bg-transparent py-0.5 pr-4 cursor-pointer rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500/40 ${value} ${gender ? '' : '!text-zinc-500'}`}
+            >
+              <option value="" className="bg-zinc-900 text-zinc-300">{t('body.profile.genders.unset')}</option>
+              <option value="female" className="bg-zinc-900 text-zinc-100">{t('body.profile.genders.female')}</option>
+              <option value="male" className="bg-zinc-900 text-zinc-100">{t('body.profile.genders.male')}</option>
+              <option value="other" className="bg-zinc-900 text-zinc-100">{t('body.profile.genders.other')}</option>
+            </select>
+            <ChevronDown size={12} aria-hidden="true" className="pointer-events-none absolute right-0 text-zinc-500" />
+          </dd>
+        </div>
+        <div className={fact}>
+          <dt className={label}>{t('body.profile.height')}</dt>
+          <dd className={value}>
+            {heightCm ? <>{fmtNum(heightCm, 1)} <span className="font-sans text-caption font-medium text-zinc-500">{t('units.cm')}</span></> : '—'}
+          </dd>
+        </div>
+      </dl>
+    </section>
+  );
+}
+
+/** The newest weigh-in that came with a body-fat reading: lean and fat, in kg and share, and their change from the one before. */
+function CompositionNow({ now, before }: { now: CompositionPair; before: CompositionPair | null }) {
+  const leanPct = 100 - now.fatPct;
+  return (
+    <Card className="px-[18px] pt-4 pb-[18px] md:px-6 flex flex-col gap-3.5">
+      <div className="flex items-baseline justify-between gap-2">
+        <h2 className="card-title-detail text-zinc-50">{t('body.composition.title')}</h2>
+        <span className="text-detail text-zinc-500">{formatCivilLong(now.date)}</span>
+      </div>
+      <div className="flex items-end justify-between gap-4">
+        <Part label={t('body.composition.lean')} color={LEAN_HEX} kg={now.leanKg} pct={leanPct} />
+        <Part label={t('body.composition.fat')} color={FAT_HEX} kg={now.fatKg} pct={now.fatPct} end />
+      </div>
+      <div
+        role="img"
+        aria-label={t('body.composition.bar', {
+          lean: kgText(now.leanKg),
+          leanShare: fixed(leanPct),
+          fat: kgText(now.fatKg),
+          fatShare: fixed(now.fatPct),
+        })}
+        className="flex h-3 md:h-3.5 rounded-full overflow-hidden gap-0.5"
+      >
+        <div style={{ width: `${leanPct}%`, background: LEAN_HEX }} />
+        <div className="flex-1" style={{ background: FAT_HEX }} />
+      </div>
+      {before && (
+        <div className="-mt-1 flex justify-between gap-4 text-caption text-zinc-500">
+          <span>{t('body.composition.fromPrevious', { change: changeText(now.leanKg - before.leanKg, t('units.kg')) })}</span>
+          <span>{t('body.composition.fromPrevious', { change: changeText(now.fatKg - before.fatKg, t('units.kg')) })}</span>
+        </div>
+      )}
+    </Card>
+  );
+}
+
+function Part({ label, color, kg, pct, end = false }: { label: string; color: string; kg: number; pct: number; end?: boolean }) {
+  return (
+    <div className={end ? 'text-right' : undefined}>
+      <div className={`flex items-center gap-1.5 ${end ? 'justify-end flex-row-reverse' : ''}`}>
+        <span className="size-2 shrink-0 rounded-[2px]" style={{ background: color }} />
+        <Label>{label}</Label>
+      </div>
+      <div className="mt-1.5 whitespace-nowrap">
+        <span className="font-display text-number md:text-number-lg leading-tight text-zinc-50 tabular-nums">{fixed(kg)}</span>
+        <span className="text-detail md:text-body-sm text-zinc-500"> {t('units.kg')}</span>
+        <span className="hidden md:inline text-body-sm text-zinc-400"> · {percentText(pct)}</span>
+      </div>
+      <div className="md:hidden text-detail text-zinc-400">{percentText(pct)}</div>
+    </div>
+  );
+}
+
+/** How the span's weight trend splits between fat and lean, from weigh-ins the scale paired with body fat. */
+function CompositionTrend({ comp }: { comp: BodyComposition | null }) {
+  if (!comp) {
+    return (
+      <Card className="flex flex-col">
+        <CardHead title={t('body.compositionTrend.title')} hint={t('body.compositionTrend.hint', { skipped: 0 })} />
+        <p className="px-5 pb-5 flex-1 flex items-center justify-center text-center text-caption text-zinc-600 min-h-[120px]">
+          {t('body.compositionTrend.needsMore')}
+        </p>
+      </Card>
+    );
+  }
+  const { weightKgPerWeek: weight, leanKgPerWeek: lean, fatKgPerWeek: fat } = comp;
+  // A share of the change only reads when lean and fat both move the way the weight does.
+  const sameWay = weight !== 0 && Math.sign(lean) === Math.sign(weight) && Math.sign(fat) === Math.sign(weight);
+  const leanShare = sameWay ? (Math.abs(lean) / (Math.abs(lean) + Math.abs(fat))) * 100 : null;
+  return (
+    <Card className="flex flex-col">
+      <CardHead
+        title={t('body.compositionTrend.title')}
+        hint={t('body.compositionTrend.hint', { skipped: comp.rejectedForSource })}
+        right={t('body.compositionTrend.readings', { pairs: comp.pairs, days: comp.spanDays })}
+      />
+      <div className="px-5 pb-5 flex-1 flex flex-col gap-3">
+        <div>
+          <Label>{t('body.compositionTrend.weight')}</Label>
+          <div className="mt-1 font-display text-number-sm text-zinc-50 tabular-nums">
+            {rich('body.compositionTrend.weightValue', {
+              change: changeText(weight, '', 2),
+              unit: (w) => <span className="font-sans text-detail font-normal text-zinc-500">{w}</span>,
+            })}
+          </div>
+        </div>
+        {leanShare !== null && (
+          <div
+            role="img"
+            aria-label={t('body.compositionTrend.shareBar', { lean: Math.round(leanShare), fat: 100 - Math.round(leanShare) })}
+            className="flex h-3 rounded-full overflow-hidden gap-0.5"
+          >
+            <div style={{ width: `${leanShare}%`, background: LEAN_HEX }} />
+            <div className="flex-1" style={{ background: FAT_HEX }} />
+          </div>
+        )}
+        <div className="flex flex-wrap justify-between gap-x-4 gap-y-1 text-detail text-zinc-400">
+          <span className="flex items-center gap-1.5">
+            <span className="size-2 rounded-[2px]" style={{ background: LEAN_HEX }} />
+            {rich('body.compositionTrend.lean', { change: changeText(lean, '', 2), b: (w) => <span className="font-semibold text-zinc-100">{w}</span> })}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="size-2 rounded-[2px]" style={{ background: FAT_HEX }} />
+            {rich('body.compositionTrend.fat', { change: changeText(fat, '', 2), b: (w) => <span className="font-semibold text-zinc-100">{w}</span> })}
+          </span>
+        </div>
+        <p className="mt-auto text-note leading-relaxed text-zinc-500">
+          {t('body.compositionTrend.note')}
+        </p>
+      </div>
+    </Card>
+  );
+}
