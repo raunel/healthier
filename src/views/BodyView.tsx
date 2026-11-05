@@ -26,34 +26,27 @@ const FAT_HEX = 'var(--amber-400)';
 
 type BodyChart = 'weight' | 'fat' | 'composition';
 
-/** A number at a fixed count of decimals */
+/** A number at a fixed count of decimals, so 108.0 kg doesn't read as 108. */
 const fixed = (v: number, digits = 1) => formatNumber(v, digits);
 
-/** Imperial Conversion Multipliers */
+/** Metric Conversion Helper */
 const kgToLbs = (kg: number) => kg * 2.20462262185;
-const cmToInches = (cm: number) => cm / 2.54;
 
-/** Helper text conversions for layout matching */
-const lbsText = (v: number) => `${fixed(kgToLbs(v))} lbs`;
-const percentText = (v: number) => `${fixed(v)}%`;
+/** A weight with its unit transformed to lbs. */
+const kgText = (v: number) => `${fixed(kgToLbs(v))} lbs`;
 
-/** Clean layout sign mapping for change metrics */
-function changeText(deltaKg: number, unit = 'lbs', digits = 1): string {
-  const deltaLbs = kgToLbs(deltaKg);
+/** A share with its unit, "39.1%". */
+const percentText = (v: number) => `${fixed(v)}${t('units.percent')}`;
+
+/** A change in a neutral voice, converted to lbs scale */
+function changeText(delta: number, unit: string, digits = 1): string {
+  const deltaLbs = kgToLbs(delta);
   const shown = Number(Math.abs(deltaLbs).toFixed(digits));
-  const arrow = shown === 0 ? '' : deltaKg > 0 ? '↑ ' : '↓ ';
-  return `${arrow}${fixed(shown, digits)} ${unit}`;
+  const arrow = shown === 0 ? '' : delta > 0 ? '↑ ' : '↓ ';
+  return `${arrow}${fixed(shown, digits)}${unit ? ` ${unit}` : ' lbs'}`;
 }
 
-/** Format height cleanly into standard fractional parameters (e.g., 5' 10") */
-const formatImperialHeight = (cm: number) => {
-  const totalInches = Math.round(cmToInches(cm));
-  const feet = Math.floor(totalInches / 12);
-  const inches = totalInches % 12;
-  return `${feet}' ${inches}"`;
-};
-
-/** How long ago a weigh-in was */
+/** How long ago a weigh-in was: weigh-ins are occasional, so its age matters. */
 function ago(days: number): string {
   if (days <= 0) return t('body.latest.ago.today');
   if (days === 1) return t('body.latest.ago.yesterday');
@@ -64,6 +57,7 @@ function ago(days: number): string {
 
 export function BodyView({ data, gender, onGender, clock, intraday }: {
   data: SyncResult;
+  /** The person's gender, kept by the app so Today's figure follows a change at once. */
   gender: Gender | null;
   onGender: (gender: Gender | null) => void;
   clock?: Clock;
@@ -73,21 +67,16 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const spanState = useSpan(data, '90');
   const window = spanState.days;
   const history = useHistory();
+  // A phone shows one chart at a time behind chips; wider screens show them all.
   const wide = useMediaQuery('(min-width: 768px)');
   const [chart, setChart] = useState<BodyChart>('weight');
 
+  // The newest readings, whatever span is on screen: long history once it has loaded, else the window.
   const all = history.days ?? data.days;
   const body = useMemo(() => latestBody(all), [all]);
   const today = data.days.at(-1)?.date ?? null;
   const heightCm = data.profile.heightCm;
-
-  // Remapped Imperial BMI Layout Formula
-  const bmi = (kg: number) => {
-    if (!heightCm) return null;
-    const lbs = kgToLbs(kg);
-    const inches = cmToInches(heightCm);
-    return (lbs / (inches * inches)) * 703;
-  };
+  const bmi = (kg: number) => (heightCm ? kg / (heightCm / 100) ** 2 : null);
 
   const { latest, previous } = body;
   const profile = (
@@ -118,19 +107,21 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const latestBmi = bmi(latest.value);
   const bmiTrail = body.weighIns.map((p) => ({ date: p.date, value: p.value === null ? null : bmi(p.value) }));
 
-  // Map metric layout keys cleanly over to transformed numerical boundaries
+  // Convert raw weight values to lbs dynamically inside the chart-bound array map streams
   const weightWin = series(window, (d) => d.weightKg ? kgToLbs(d.weightKg) : null);
   const fatWin = series(window, (d) => d.bodyFatPct);
   const weighIns = weightWin.filter((p): p is { date: string; value: number } => p.value !== null);
-
+  
+  // Baseline metric tracking arrays for trends calculation processing blocks
   const metricWeightWin = series(window, (d) => d.weightKg);
   const trend = weightTrend(metricWeightWin);
   const comp = bodyComposition(window);
   
-  const highest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value > a.value ? p : a), null);
-  const lowest = weighIns.reduce<(typeof weighIns)[number] | null>((a, p) => (!a || p.value < a.value ? p : a), null);
+  const highest = metricWeightWin.filter((p): p is { date: string; value: number } => p.value !== null).reduce<(typeof metricWeightWin)[number] | null>((a, p) => (!a || p.value > a.value ? p : a), null);
+  const lowest = metricWeightWin.filter((p): p is { date: string; value: number } => p.value !== null).reduce<(typeof metricWeightWin)[number] | null>((a, p) => (!a || p.value < a.value ? p : a), null);
   const weightBucket = bucketForSeries(weightWin, window.length);
   const fatBucket = bucketForSeries(fatWin, window.length);
+  // Which charts exist depends on what the person has ever recorded, so a quiet span shows them empty rather than hiding them.
   const everFat = all.some((d) => d.bodyFatPct !== null);
   const everPaired = body.composition !== null;
   const latestInSpan = weighIns.at(-1);
@@ -143,24 +134,23 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         <Row dense={!wide} label={t('body.summary.weighIns')}>
           {weighIns.length || (spanState.loading ? t('body.summary.loading') : t('body.summary.none', { count: window.length }))}
         </Row>
-        {trend && <Row dense={!wide} label={t('body.summary.trend')}>{changeText(trend.kgPerWeek, 'lbs/wk', 2)}</Row>}
+        {trend && <Row dense={!wide} label={t('body.summary.trend')}>{t('body.summary.trendValue', { change: changeText(trend.kgPerWeek, 'lbs/wk', 2) })}</Row>}
         {highest && (
           <Row dense={!wide} label={t('body.summary.highest')}>
-            {fixed(highest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
+            {kgText(highest.value)}<span className="text-zinc-500"> · {formatCivilLong(highest.date)}</span>
           </Row>
         )}
         {lowest && (
           <Row dense={!wide} label={t('body.summary.lowest')}>
-            {fixed(lowest.value)} lbs<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
+            {kgText(lowest.value)}<span className="text-zinc-500"> · {formatCivilLong(lowest.date)}</span>
           </Row>
         )}
-        {metricWeightWin.length >= 2 && (
-          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(metricWeightWin[metricWeightWin.length - 1].value! - metricWeightWin.value!, 'lbs')}</Row>
+        {metricWeightWin.filter(p => p.value !== null).length >= 2 && (
+          <Row dense={!wide} label={t('body.summary.firstToLast')}>{changeText(metricWeightWin.filter(p => p.value !== null).at(-1)!.value! - metricWeightWin.filter(p => p.value !== null)[0].value!, 'lbs')}</Row>
         )}
       </div>
     </Card>
   );
-
   const weightCard = (
     <Card className="lg:col-span-8">
       <CardHead
@@ -168,7 +158,10 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         hint={t('body.weightChart.hint')}
         right={latestInSpan && (
           <span>
-            {fixed(latestInSpan.value)} lbs
+            {rich('body.weightChart.latest', {
+              weight: `${fixed(latestInSpan.value)} lbs`,
+              value: (w) => <span className={DOMAIN.body.text}>{w}</span>,
+            })}
           </span>
         )}
       />
@@ -177,7 +170,6 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
       </div>
     </Card>
   );
-
   const fatCard = everFat && (
     <Card>
       <CardHead
@@ -193,17 +185,17 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
       </div>
     </Card>
   );
-
   const compCard = everPaired && <CompositionTrend comp={comp} />;
   const charts: { key: BodyChart; label: string; card: React.ReactNode }[] = [
     { key: 'weight', label: t('body.chips.weight'), card: weightCard },
     ...(fatCard ? [{ key: 'fat' as const, label: t('body.chips.fat'), card: fatCard }] : []),
     ...(compCard ? [{ key: 'composition' as const, label: t('body.chips.composition'), card: compCard }] : []),
   ];
-  const shownChart = charts.find((c) => c.key === chart) ?? charts;
+  const shownChart = charts.find((c) => c.key === chart) ?? charts[0];
 
   return (
     <div className="space-y-3">
+      {/* Who you are and the newest readings, whatever span is chosen below. On wide screens, profile, weight and BMI share a row. */}
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-3">
         {profile}
         <div className="min-w-0 lg:order-3 grid">
@@ -213,18 +205,4 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
             value={<Value value={kgToLbs(latest.value)} size="md" digits={1} unit="lbs" />}
             chart={body.weighIns.length > 1 && <Spark series={body.weighIns.map(w => ({ ...w, value: kgToLbs(w.value) }))} color={DOMAIN.body.hex} height={28} />}
             rows={[[t('body.latest.weight.fromPrevious'), previous && changeText(latest.value - previous.value, 'lbs')]]}
-            note={daysOld > 14 ? t('body.latest.from', { date: formatCivilLong(latest.date), ago: ago(daysOld) }) : null}
-          />
-        </div>
-        <div className="min-w-0 lg:order-4 grid">
-          <Tile
-            label={t('body.latest.bmi.label')}
-            icon={<Ruler size={14} className={DOMAIN.body.text} />}
-            value={<Value value={latestBmi} size="md" digits={1} />}
-            chart={latestBmi !== null && body.weighIns.length > 1 && <Spark series={bmiTrail} color={DOMAIN.body.hex} height={28} />}
-            rows={[[t('body.latest.bmi.fromPrevious'), previous && latestBmi !== null && changeText(latestBmi - bmi(previous.value)!, '')]]}
-            empty={latestBmi === null ? t('body.latest.bmi.needsHeight') : null}
-          />
-        </div>
-      </div>
-
+            // Weigh-ins are occasional: one more than two weeks old says when it was.
