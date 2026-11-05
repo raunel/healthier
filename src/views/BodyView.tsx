@@ -120,7 +120,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
   const latestInSpan = weighIns.at(-1);
   const latestFat = values(fatWin).at(-1);
 
-  // Safe arithmetic processing for historical first-to-last changes
+  // Safe pre-calculated layout metrics for historical first-to-last tracking changes
   const firstWeighIn = weighIns.at(0);
   const lastWeighIn = weighIns.at(-1);
   const overallChange = (firstWeighIn && lastWeighIn) ? lastWeighIn.value - firstWeighIn.value : 0;
@@ -209,4 +209,3 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         </div>
         <div className="min-w-0 lg:order-4 grid">
           <Tile
-            label={t('body.latest.bmi.label')}
