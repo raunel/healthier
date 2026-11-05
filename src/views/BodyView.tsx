@@ -35,7 +35,7 @@ const cmToInches = (cm: number) => cm / 2.54;
 
 /** Helper text conversions for layout matching */
 const lbsText = (v: number) => `${fixed(kgToLbs(v))} lbs`;
-const percentText = (v: number) => `${fixed(v)}${t('units.percent')}`;
+const percentText = (v: number) => `${fixed(v)}%`;
 
 /** Clean layout sign mapping for change metrics */
 function changeText(deltaKg: number, unit = 'lbs', digits = 1): string {
@@ -200,7 +200,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
     ...(fatCard ? [{ key: 'fat' as const, label: t('body.chips.fat'), card: fatCard }] : []),
     ...(compCard ? [{ key: 'composition' as const, label: t('body.chips.composition'), card: compCard }] : []),
   ];
-  const shownChart = charts.find((c) => c.key === chart) ?? charts[0];
+  const shownChart = charts.find((c) => c.key === chart) ?? charts;
 
   return (
     <div className="space-y-3">
