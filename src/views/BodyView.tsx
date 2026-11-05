@@ -26,19 +26,19 @@ const FAT_HEX = 'var(--amber-400)';
 
 type BodyChart = 'weight' | 'fat' | 'composition';
 
-/** A number at a fixed count of decimals, so 108.0 kg doesn't read as 108. */
+/** OVERRIDE: Automatically converts all raw kg inputs into lbs on the fly */
 const fixed = (v: number, digits = 1) => formatNumber(v * 2.20462262185, digits);
 
-/** A weight with its unit transformed to lbs. */
+/** OVERRIDE: Swaps the trailing "kg" symbol text over to read "lbs" safely */
 const kgText = (v: number) => `${fixed(v)} lbs`;
 
 /** A share with its unit, "39.1%". */
-const percentText = (v: number) => `${formatNumber(v, 1)}${t('units.percent')}`;
+const percentText = (v: number) => `${fixed(v, 1)}${t('units.percent')}`;
 
-/** A change in a neutral voice, converted to lbs scale */
+/** OVERRIDE: Modifies delta value strings to scale to the lbs factor */
 function changeText(delta: number, unit: string, digits = 1): string {
-  const deltaLbs = delta * 2.20462262185;
-  const shown = Number(Math.abs(deltaLbs).toFixed(digits));
+  const convertedDelta = delta * 2.20462262185;
+  const shown = Number(Math.abs(convertedDelta).toFixed(digits));
   const arrow = shown === 0 ? '' : delta > 0 ? '↑ ' : '↓ ';
   return `${arrow}${formatNumber(shown, digits)}${unit ? ' lbs/wk' : ' lbs'}`;
 }
@@ -159,6 +159,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         )}
       />
       <div className="px-2 pb-3">
+        {/* Forces the trend chart points to multiply by the imperial factor safely */}
         <TrendChart series={groupSeries(weightWin, weightBucket).map(p => ({ ...p, value: p.value ? p.value * 2.20462262185 : null }))} bucket={weightBucket} color={DOMAIN.body.hex} height={wide ? 240 : 210} unit="lbs" format={(v) => fmtNum(v, 1)} meanWindow={null} />
       </div>
     </Card>
@@ -184,7 +185,7 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
     ...(fatCard ? [{ key: 'fat' as const, label: t('body.chips.fat'), card: fatCard }] : []),
     ...(compCard ? [{ key: 'composition' as const, label: t('body.chips.composition'), card: compCard }] : []),
   ];
-  const shownChart = charts.find((c) => c.key === chart) ?? charts;
+  const shownChart = charts.find((c) => c.key === chart) ?? charts[0];
 
   return (
     <div className="space-y-3">
@@ -204,6 +205,3 @@ export function BodyView({ data, gender, onGender, clock, intraday }: {
         </div>
         <div className="min-w-0 lg:order-4 grid">
           <Tile
-            label={t('body.latest.bmi.label')}
-            icon={<Ruler size={14} className={DOMAIN.body.text} />}
-            value={<Value value={latestBmi} size="md" digits={1} />}
