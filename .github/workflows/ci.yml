@@ -56,13 +56,13 @@ jobs:
           POSTGRES_PASSWORD=$(openssl rand -hex 16)
           EOF
           docker compose up -d
-          for i in $(seq 1 45); do curl -fsS http://localhost:3000/healthz && break; sleep 2; done
+          for i in $(seq 1 45); do curl -fsS http://localhost:3001/healthz && break; sleep 2; done
           set -x
-          curl -fsS http://localhost:3000/healthz | grep -q '"ok":true'
-          curl -fsS http://localhost:3000/ | grep -q '<div id="root">'
-          curl -fsS http://localhost:3000/some/client/route | grep -q '<div id="root">'
-          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3000/api/me)" = 401
-          curl -sI http://localhost:3000/auth/google | grep -qi '^location: https://accounts.google.com/'
+          curl -fsS http://localhost:3001/healthz | grep -q '"ok":true'
+          curl -fsS http://localhost:3001/ | grep -q '<div id="root">'
+          curl -fsS http://localhost:3001/some/client/route | grep -q '<div id="root">'
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:3001/api/me)" = 401
+          curl -sI http://localhost:3001/auth/google | grep -qi '^location: https://accounts.google.com/'
           docker compose logs app | grep -q 'Applied migration 1'
       - name: Container logs
         if: failure()
